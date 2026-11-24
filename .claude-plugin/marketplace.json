@@ -1,0 +1,21 @@
+{
+  "name": "noslop-skills",
+  "owner": {
+    "name": "shashikantdev3"
+  },
+  "metadata": {
+    "description": "Agent skills that kill AI slop: rough asks become ready-to-run prompts, specs and system prompts for any model.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "wellasked",
+      "description": "Turn a rough request into a ready-to-run prompt, build spec or system prompt for any model or coding agent. At most 3 questions, each with a recommended default.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/wellasked"
+      ]
+    }
+  ]
+}
