@@ -4,8 +4,8 @@
     "name": "shashikantdev3"
   },
   "metadata": {
-    "description": "Agent skills that kill AI slop: rough asks become ready-to-run prompts, specs and system prompts for any model.",
-    "version": "0.1.0"
+    "description": "Agent skills that kill AI slop: rough asks become ready-to-run prompts and specs for any model, and UI briefs become enterprise-grade screens.",
+    "version": "0.2.0"
   },
   "plugins": [
     {
@@ -15,6 +15,15 @@
       "strict": false,
       "skills": [
         "./skills/wellasked"
+      ]
+    },
+    {
+      "name": "enterprise-ui",
+      "description": "Build, brief or review enterprise-grade UI: data tables, forms, dashboards and admin screens with every state covered, WCAG 2.2 AA, and a never-list for generic AI looks.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/enterprise-ui"
       ]
     }
   ]

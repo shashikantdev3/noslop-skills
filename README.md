@@ -11,7 +11,7 @@ Plain [SKILL.md](https://agentskills.io) files. They work in Claude Code, Codex,
 | Skill | What it does | Status |
 | --- | --- | --- |
 | [wellasked](skills/wellasked/SKILL.md) | Turns a rough request into a ready-to-run prompt, build spec or system prompt for any model. Asks at most 3 questions, each with a recommended default, and lists its assumptions instead of asking the rest. | Available |
-| enterprise-ui | Turns a UI ask into a brief for enterprise apps: dense tables, forms and dashboards, design tokens, every empty, loading and error state, WCAG 2.2 AA, and a "never" list (gradients, glass effects, emoji icons). | Planned |
+| [enterprise-ui](skills/enterprise-ui/SKILL.md) | Builds, briefs or reviews enterprise UI: data tables, forms, dashboards, record pages and settings. Reuses the project's design system, covers every empty, loading and error state, meets WCAG 2.2 AA, and follows a never-list for generic AI looks (gradients, glass effects, emoji icons, hero banners, fake data). | Available |
 | prompt-review | Checks an existing prompt for vague words, a "done" that cannot be checked, missing gates, contradictions, and data mixed in with instructions. Reports findings; does not rewrite silently. | Planned |
 | prompt-port | Moves a prompt between vendors and model types (frontier to small local model, chat to coding agent) and says what changed and why. | Planned |
 | prompt-evals | Writes a small golden set and pass/fail checks for any prompt, with no framework or vendor needed. | Planned |
@@ -36,9 +36,10 @@ The CLI asks which agents to install for and knows where each one keeps its skil
 ```text
 /plugin marketplace add shashikantdev3/noslop-skills
 /plugin install wellasked@noslop-skills
+/plugin install enterprise-ui@noslop-skills
 ```
 
-**By hand:** copy `skills/wellasked/` into your agent's skills folder, for example `~/.claude/skills/wellasked/` for Claude Code.
+**By hand:** copy a skill folder, such as `skills/wellasked/`, into your agent's skills folder, for example `~/.claude/skills/wellasked/` for Claude Code.
 
 **A chat assistant with no skills support** (ChatGPT, Gemini, Copilot Chat): paste the body of `SKILL.md` at the start of a chat, or into a project's custom instructions, then describe what you need.
 
@@ -116,6 +117,53 @@ Checked in November 2026. Each column is a category of existing tools, with one 
 | Gates in the output | No | Gates their own steps | Sometimes | Required before irreversible, costly or public steps |
 | Adapts to model type | Their own models | No | Yes, by named tool | Yes, by model type |
 
+## enterprise-ui
+
+For the screens people use all day: admin consoles, data tables, forms, dashboards, record pages, settings and internal tools. The data and the task lead; the interface steps back.
+
+### Three modes
+
+- **Build:** the agent writes the UI code, then reviews it against the checklist before handing it over.
+- **Brief:** it writes a UI prompt or spec for another agent or design tool, using a fill-in template.
+- **Review:** give it existing code, a screenshot or a URL. It reports findings as blocker, major or minor, each with a fix, and does not rewrite unless asked.
+
+### What it insists on
+
+- **Your design system first.** It reads the package manifest, tokens and existing screens before choosing anything, and never adds a second component library or icon set.
+- **Every state.** Empty, loading, error, no results, no permission and stale data, for every view.
+- **Accessibility.** WCAG 2.2 AA contrast, full keyboard use, visible focus, targets of at least 24 px, and status never shown by color alone.
+- **Real data shapes.** Seeded sample data with long names, zeros, nulls and 10,000 rows. Never lorem ipsum or invented KPIs.
+- **Safe actions.** "Delete 3 invoices", not "OK". High-impact actions need the name typed in.
+- **Patterns** for tables, forms, dashboards, record pages and settings: right-aligned numbers with units, filters kept in the URL, one primary button per view, errors that say how to fix them.
+- **A never-list:**
+  - gradients, glass effects and neon glows;
+  - hero banners inside apps;
+  - emoji icons;
+  - identical card grids with the same soft shadow;
+  - load animations and parallax;
+  - invented component props.
+
+### Example
+
+You say:
+
+```text
+build an admin page to manage users, make it look professional, not like AI made it
+```
+
+It finds React, Tailwind and shadcn/ui in the project, asks nothing, and builds:
+- a users table with sort, search, and role and status filters kept in the URL;
+- status badges with both text and color;
+- a bulk "Deactivate 4 users" action that confirms with the count;
+- all four states;
+- 60 seeded users that include the awkward cases.
+
+It ends with its assumptions and what it checked: a keyboard-only pass and screenshots at 1280 and 1440 px.
+
+### How it differs from design-led skills
+
+Skills such as Anthropic's [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) aim for a distinctive look for a branded page, and they do that well. Enterprise screens need the opposite: familiar patterns, density, consistency and complete states. Use frontend-design for the landing page and enterprise-ui for the app behind the login.
+
 ## The noslop bar
 
 Every skill in this repo follows these rules. They are also the checklist for adding one.
@@ -136,7 +184,9 @@ noslop-skills/
     marketplace.json        Claude Code marketplace: one plugin per skill
   skills/
     wellasked/
-      SKILL.md              the skill: frontmatter, workflow, templates, examples
+      SKILL.md              rough ask to prompt, build spec or system prompt
+    enterprise-ui/
+      SKILL.md              build, brief or review enterprise UI
   README.md
 ```
 
