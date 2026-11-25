@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="528" viewBox="0 0 1200 528" role="img" aria-label="How the noslop skills fit together. Prompts: a rough ask goes to wellasked, which writes the prompt; prompt-review reads it and can send fixes back; prompt-evals runs it on a golden set; then it is ready to ship. prompt-port moves it to a new model or tool, and the same evals run again. Agents and UI: agent-gates reads the repository and writes ask-before-you-act rules with settings that enforce them; enterprise-ui builds, briefs or reviews dense, accessible app screens.">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#59636e"/>
+    </marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+      .group { fill: #f6f8fa; stroke: #d0d7de; }
+      .label { font-size: 18px; font-weight: 600; fill: #1f2328; }
+      .skill { fill: #ffffff; stroke: #0969da; stroke-width: 1.5; }
+      .plain { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.5; }
+      .input { fill: #ffffff; stroke: #8c959f; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .name { font-size: 18px; font-weight: 600; fill: #0969da; text-anchor: middle; }
+      .title { font-size: 17px; font-weight: 600; fill: #1f2328; text-anchor: middle; }
+      .sub { font-size: 14px; fill: #59636e; text-anchor: middle; }
+      .note { font-size: 13px; fill: #59636e; }
+      .wire { fill: none; stroke: #59636e; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <rect x="0.5" y="0.5" width="1199" height="527" rx="12" fill="#ffffff" stroke="#d0d7de"/>
+
+  <!-- Prompts -->
+  <rect class="group" x="24" y="24" width="1152" height="300" rx="10"/>
+  <text class="label" x="48" y="58">Prompts: write, read, run, move</text>
+
+  <rect class="input" x="48" y="96" width="180" height="96" rx="8"/>
+  <text class="title" x="138" y="134">Rough ask</text>
+  <text class="sub" x="138" y="158">voice notes, messy</text>
+  <text class="sub" x="138" y="176">ideas, half a spec</text>
+
+  <rect class="skill" x="268" y="96" width="180" height="96" rx="8"/>
+  <text class="name" x="358" y="134">wellasked</text>
+  <text class="sub" x="358" y="158">writes the prompt,</text>
+  <text class="sub" x="358" y="176">spec or system prompt</text>
+
+  <rect class="skill" x="488" y="96" width="180" height="96" rx="8"/>
+  <text class="name" x="578" y="134">prompt-review</text>
+  <text class="sub" x="578" y="158">reads it: findings</text>
+  <text class="sub" x="578" y="176">and a verdict</text>
+
+  <rect class="skill" x="708" y="96" width="180" height="96" rx="8"/>
+  <text class="name" x="798" y="134">prompt-evals</text>
+  <text class="sub" x="798" y="158">runs it: pass/fail</text>
+  <text class="sub" x="798" y="176">on a golden set</text>
+
+  <rect class="plain" x="928" y="96" width="180" height="96" rx="8"/>
+  <text class="title" x="1018" y="134">Ready to ship</text>
+  <text class="sub" x="1018" y="158">with tests that</text>
+  <text class="sub" x="1018" y="176">stay with it</text>
+
+  <path class="wire" d="M228,144 H268" marker-end="url(#arrow)"/>
+  <path class="wire" d="M448,144 H488" marker-end="url(#arrow)"/>
+  <path class="wire" d="M668,144 H708" marker-end="url(#arrow)"/>
+  <path class="wire" d="M888,144 H928" marker-end="url(#arrow)"/>
+
+  <!-- fix loop -->
+  <path class="wire" d="M578,192 V250 H358 V192" marker-end="url(#arrow)"/>
+  <text class="note" x="468" y="242" text-anchor="middle">reply "fix 1, 3"</text>
+
+  <!-- port loop -->
+  <rect class="skill" x="708" y="228" width="180" height="72" rx="8"/>
+  <text class="name" x="798" y="256">prompt-port</text>
+  <text class="sub" x="798" y="278">moves it to a new</text>
+  <text class="sub" x="798" y="294">model or tool</text>
+  <path class="wire" d="M1018,192 V264 H888" marker-end="url(#arrow)"/>
+  <text class="note" x="1028" y="236">new model?</text>
+  <path class="wire" d="M798,228 V192" marker-end="url(#arrow)"/>
+  <text class="note" x="808" y="215">same evals again</text>
+
+  <!-- Agents and UI -->
+  <rect class="group" x="24" y="348" width="1152" height="156" rx="10"/>
+  <text class="label" x="48" y="382">Agents and UI</text>
+
+  <rect class="skill" x="48" y="402" width="244" height="80" rx="8"/>
+  <text class="name" x="170" y="434">agent-gates</text>
+  <text class="sub" x="170" y="458">reads your repo's real commands</text>
+
+  <rect class="plain" x="332" y="402" width="248" height="80" rx="8"/>
+  <text class="title" x="456" y="434">Ask-before-you-act rules</text>
+  <text class="sub" x="456" y="458">plus settings that enforce them</text>
+
+  <path class="wire" d="M292,442 H332" marker-end="url(#arrow)"/>
+
+  <rect class="skill" x="620" y="402" width="220" height="80" rx="8"/>
+  <text class="name" x="730" y="434">enterprise-ui</text>
+  <text class="sub" x="730" y="458">builds, briefs or reviews</text>
+
+  <rect class="plain" x="880" y="402" width="272" height="80" rx="8"/>
+  <text class="title" x="1016" y="434">Dense, accessible screens</text>
+  <text class="sub" x="1016" y="458">every state, no purple gradients</text>
+
+  <path class="wire" d="M840,442 H880" marker-end="url(#arrow)"/>
+</svg>

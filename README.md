@@ -1,10 +1,40 @@
-# noslop-skills
+<h1 align="center">noslop-skills</h1>
 
-**Agent skills that kill AI slop.**
+<p align="center"><strong>Agent skills that kill AI slop.</strong></p>
 
-AI slop is what you get when a model has to guess: vague prompts, specs that say "robust" and "scalable" with nothing checkable, purple-gradient dashboards, invented facts, agents that push to git without asking. These skills remove the guessing. Each one turns a rough, human ask into something specific enough that any model or coding agent can do it right the first time.
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-2da44e" alt="License: Apache 2.0"></a>
+  <a href="#skills"><img src="https://img.shields.io/badge/Skills-6-0969da" alt="6 skills"></a>
+  <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Format-SKILL.md-57606a" alt="Format: SKILL.md"></a>
+  <a href="#install"><img src="https://img.shields.io/badge/Works%20with-Claude%20Code%20%7C%20Codex%20%7C%20Copilot%20%7C%20Cursor%20%7C%20Gemini%20CLI-57606a" alt="Works with Claude Code, Codex, Copilot, Cursor and Gemini CLI"></a>
+</p>
+
+<p align="center">
+  <a href="#install"><img src="assets/install.svg" alt="Install every skill: npx skills add shashikantdev3/noslop-skills" width="640"></a>
+</p>
+
+**AI slop** is what you get when a model has to guess: vague prompts, specs that say "robust" and "scalable" with nothing checkable, purple-gradient dashboards, invented facts, agents that push to git without asking. **noslop-skills** remove the guessing. Each one turns a rough, human ask into something specific enough that any model or coding agent can do it right the first time.
+
+- **Prompt skills** write, review, test and port prompts: a rough ask becomes a prompt, spec or system prompt, gets read for gaps, runs against a golden set, and moves to a new model without losing what it does.
+- **Agent and UI skills** put ask-before-you-act gates on coding agents, and keep app screens dense, accessible and free of generic AI looks.
+
+<p align="center">
+  <img src="assets/how-it-fits.svg" alt="How the skills fit together: a rough ask goes to wellasked, prompt-review reads the result and can send fixes back, prompt-evals runs it, and it is ready to ship; prompt-port moves it to a new model and the same evals run again. agent-gates turns a repository's real commands into ask-before-you-act rules with settings that enforce them. enterprise-ui builds, briefs or reviews dense, accessible screens." width="100%">
+</p>
 
 Plain [SKILL.md](https://agentskills.io) files. They work in Claude Code, Codex, GitHub Copilot, Cursor, Gemini CLI and 75+ other agents through the [skills CLI](https://github.com/vercel-labs/skills), and as plain instructions in any chat assistant.
+
+## Contents
+
+- [Skills](#skills)
+- [Install](#install)
+- Prompt skills: [wellasked](#wellasked), [prompt-review](#prompt-review), [prompt-port](#prompt-port), [prompt-evals](#prompt-evals)
+- Agent and UI skills: [agent-gates](#agent-gates), [enterprise-ui](#enterprise-ui)
+- [The noslop bar](#the-noslop-bar)
+- [Repository layout](#repository-layout)
+- [Add a skill](#add-a-skill)
+- [Credits](#credits)
+- [License](#license)
 
 ## Skills
 
@@ -324,6 +354,7 @@ Every skill in this repo follows these rules. They are also the checklist for ad
 
 ```text
 noslop-skills/
+  assets/                   README images (SVG)
   .claude-plugin/
     marketplace.json        Claude Code marketplace: one plugin per skill
   skills/
