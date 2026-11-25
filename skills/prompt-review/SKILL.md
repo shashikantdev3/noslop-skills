@@ -14,6 +14,7 @@ Report; do not rewrite. The author decides what to change. Write a revised versi
 - **Quote, then fix.** Every finding quotes the exact words (or names the missing section), says why it fails, and gives a fix the author can paste.
 - **Respect intent.** Judge the prompt against its own goal. Do not impose a style the author did not ask for.
 - **Keep what works.** Name up to 3 strengths so a fix does not break them.
+- **"Ready" is a valid verdict.** If the prompt does its job, say so. Do not invent findings to fill the table; a change the evidence does not support makes a working prompt worse.
 - **Check facts you can check.** If you have the repository or the docs, confirm that every path, command, file and tool the prompt mentions exists. Do not guess.
 
 ## Workflow
@@ -28,6 +29,7 @@ Report; do not rewrite. The author decides what to change. Write a revised versi
   - an agent inside a product;
   - an agent instruction file (AGENTS.md, CLAUDE.md, SKILL.md).
 - **Identify the goal.** State it in one line. If you cannot, that is the first finding.
+- **Look at outputs, if there are any.** If the person also gives an output the prompt produced, judge it with the output check in prompt-evals (delivery, conformance, fidelity, consistency, fitness, finish). Trace each failure back to the prompt line that allowed it, and make that line the finding.
 - **Ask only if it matters.** Ask at most 3 questions, each with options and a recommended default, only if the answer changes the review (usually: which model, or who the audience is). Otherwise state your assumptions and proceed.
 
 ### Step 2: Run the checks
@@ -70,6 +72,7 @@ Use the output format at the end.
 - Is there a checkable "done when"? "High quality" is not checkable. "Passes the 12 cases in tests/golden.json" is.
 - Is the output format exact (sections, a JSON schema, a length) and placed last?
 - Does it ask for one deliverable, or several that compete?
+- Does it tell the model to check its output against the done criteria before finishing?
 
 ### 2. Specificity
 - **Vague words with no criteria:** good, robust, clean, modern, scalable, enterprise grade, professional, engaging, concise, thorough, best, top notch.
@@ -109,6 +112,9 @@ Use the output format at the end.
 
 ### 7. Size and structure
 - Content the model would do anyway, filler role lines ("You are a world-class expert"), and repetition.
+- Lines that change nothing, such as "be thorough" or "do your best". Cut them.
+- Steps for rediscovering a fact the author already knows ("find the config file, then read the version"). State the fact instead.
+- For agents: no rule for a failed tool call (one fallback, then stop and report) and no stop condition.
 - A long prompt with no headings, no numbering, or the deliverable buried in the middle.
 - A multi-day build squeezed into one chat prompt, with no spec file, no gates and no resume prompt.
 

@@ -59,6 +59,11 @@ Give each action a one-line reason. Watch for the same command in two environmen
 ### Step 4: Write the section
 Use the template below, filled with the repository's real commands. Keep it short enough to load on every request: about 40 lines.
 
+Put each rule where it belongs:
+- **A rule that applies on every request** goes in the always-on file (AGENTS.md, CLAUDE.md). The gates belong here.
+- **A narrow procedure used only sometimes,** such as how to cut a release or rotate a key, goes in a skill or a separate doc that the agent loads when it needs it. The always-on file points to it in one line.
+- **Always-on text costs attention on every request.** When you add some, cut some: remove lines the agent would follow anyway or that no longer apply.
+
 ### Step 5: Enforce it
 Map every ask-first and never action to the strongest control available:
 - the agent tool's permission settings (allow, ask and deny rules) and hooks that can block a call;

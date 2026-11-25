@@ -1,6 +1,6 @@
 ---
 name: prompt-evals
-description: "Write a small golden set and pass/fail checks for any prompt, system prompt or agent, with no framework or vendor required. Turns each rule in the prompt into test cases (normal, edge, adversarial, should-refuse and regression), picks the cheapest reliable check for each (schema, exact match, contains, numeric tolerance, tool-call assertions, and a yes/no model grader only when code cannot check), sets thresholds, and gives a way to run it: by hand, with one small script, or in the eval tool the project already uses. Never reports a pass rate it did not run. Use when someone asks to test, evaluate, benchmark or regression-test a prompt or agent, or to check a prompt change or model switch."
+description: "Write a small golden set and pass/fail checks for any prompt, system prompt or agent, with no framework or vendor required. Turns each rule in the prompt into test cases (normal, edge, adversarial, should-refuse and regression), picks the cheapest reliable check for each (schema, exact match, contains, numeric tolerance, tool-call assertions, and a yes/no model grader only when code cannot check), sets thresholds, and gives a way to run it: by hand, with one small script, or in the eval tool the project already uses. Can also compare two prompt versions blind and record which changes helped. Never reports a pass rate it did not run. Use when someone asks to test, evaluate, benchmark or regression-test a prompt or agent, or to check a prompt change or model switch."
 ---
 
 # prompt-evals
@@ -76,6 +76,16 @@ Rules for a model grader:
 - hand-label 5 outputs first and check that the grader agrees with you on all 5, or fix the question;
 - watch for known grader biases: longer answers, the first option, and its own model's style.
 
+**The output check.** When a grader judges a whole output, it asks these six questions in order, each yes or no:
+1. **Delivery:** is everything that was asked for there?
+2. **Conformance:** only what was asked, in the requested shape?
+3. **Fidelity:** does every claim hold up against the input or the sources?
+4. **Consistency:** do totals, counts and cross-references agree with each other?
+5. **Fitness:** could the person or system that receives it use it as it is?
+6. **Finish:** no placeholders, TODOs or unfinished parts?
+
+An output that is shorter, correct and exactly shaped beats a longer one with a gap. Length is never a reason to pass.
+
 ### Step 5: Set thresholds
 - **Safety cases** (adversarial, refuse, secrets, gates): 100%. One failure blocks.
 - **Everything else:** the person's threshold, default 90%.
@@ -90,6 +100,17 @@ Rules for a model grader:
 If you can run it, run it and fill in the results. Report each failure with the case id, what was expected, what came back, and the rule it breaks. Do not change an expected value to make a case pass; if the expectation was wrong, say so and why.
 
 If you cannot run it, say "not run" and give the exact command or steps.
+
+## Compare two versions
+Use this when someone wants to know whether a prompt change is better, not just whether it passes.
+1. **Write the versions.** A is the current prompt. B changes it in a small number of named ways, each listed.
+2. **Run both on the same cases,** with the same model and settings.
+3. **Judge blind.** For each case, show the grader the two outputs as X and Y in random order, never saying which version wrote which. It applies the output check to both and picks one, or calls it a tie.
+4. **Record each change** as helped, hurt, no effect or unclear, with the case ids as evidence. Unclear means the evidence is too thin; it is not a win.
+5. **Decide.** Keep B only if it wins on the evidence and loses no safety case. Keeping A is a valid result: a change the evidence does not support makes the prompt worse.
+6. **Write at most one lesson** that would carry over to other prompts, or none. Most comparisons teach something about this prompt only.
+
+Save the comparison in `results/compare-<date>.md`.
 
 ## Agents and agent files
 For a coding agent, an AGENTS.md or an agent inside a product, test the end state, not the wording of the transcript:
@@ -138,6 +159,7 @@ Thresholds: <safety 100%; others N%; runs per case>
 How to run: <steps or command>
 
 Results: <table of failures with id, expected, got, rule; or "not run">
+Comparison, if asked: <each change: helped, hurt, no effect or unclear, with case ids; the decision; at most one lesson>
 Gaps: <behaviors not covered and why, at most 3>
 ```
 

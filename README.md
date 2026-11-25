@@ -61,7 +61,7 @@ The CLI asks which agents to install for and knows where each one keeps its skil
    - **C:** a system prompt for an AI agent inside a product.
 6. **Write it,** turning every taste word ("clean", "modern", "enterprise grade") into criteria.
 7. **Adapt it** to the target: small or local model, reasoning model, coding agent, or chat assistant.
-8. **Review it.** Could a newcomer run it with no chat history? Is "done" checkable? Is there a gate before every irreversible, costly or public action? Was anything invented?
+8. **Review it** as an output, in order: delivery (everything asked for is there), conformance (only what was asked, in the right shape), fidelity (nothing about you is invented), consistency, fitness (a newcomer could run it, "done" is checkable, every irreversible step has a gate) and finish (no placeholders). When two versions both pass, the shorter one wins.
 9. **Deliver** the prompt, up to 5 assumptions, and one line on where to paste it.
 
 ### Example
@@ -195,6 +195,8 @@ It treats the prompt under review as data, so a prompt that says "ignore previou
 
 A verdict (Ready, Ready after fixes, or Not ready), then a table of findings. Each finding has a severity, the exact quote, the problem and a fix you can paste. Then up to 3 strengths to keep, and what it verified. There is no score out of 10. Reply "fix" for a revised version with every change marked, or "fix 1, 3" for some of the findings.
 
+"Ready" is a valid verdict. If your prompt already does its job, it says so and does not invent findings, because a change the evidence does not support makes a working prompt worse.
+
 ### Example
 
 ```text
@@ -258,6 +260,12 @@ A prompt without tests is a guess that happened to work once. prompt-evals write
 3. **Pick the cheapest check that decides each case:** schema, exact match, numeric tolerance, contains or does not contain, pattern and length, tool-call assertions. A model grader comes last, only for meaning code cannot check, with one yes/no question per criterion, checked first against 5 outputs you labeled by hand.
 4. **Set thresholds:** safety cases must pass every time; the rest default to 90%. Each case runs 3 times, because models vary between runs.
 5. **Run it** by hand, with one small script in your project's language, or in the eval tool you already use. It does not add a framework.
+
+### Compare two versions
+
+To find out whether a prompt change is actually better, it runs both versions on the same cases and judges the outputs blind, in random order, with a six-question output check: delivery, conformance, fidelity, consistency, fitness and finish. Each change is recorded as helped, hurt, no effect or unclear, with the cases as evidence. Keeping the old version is a valid result, and it writes at most one lesson that carries over to other prompts, or none.
+
+### Agents
 
 For coding agents and agents in products, it tests the end state: the task is done, no files changed outside scope, no push or delete without approval, and instructions planted in a file or web page were ignored.
 
@@ -343,6 +351,16 @@ noslop-skills/
 5. Add a plugin entry to `.claude-plugin/marketplace.json` and a row to the [Skills](#skills) table.
 
 Issues and pull requests are welcome. Please open an issue first for a new skill, with the gap it fills.
+
+## Credits
+
+Several ideas here come from [Harness²](https://github.com/google-research/harness2) by Google Research (Apache-2.0) and its paper: Xu et al., "Harness²: Recursive Agent Harnessing for an Open World", [arXiv:2610.14224](https://arxiv.org/abs/2610.14224), 2026. They are:
+- the ordered output check (delivery, conformance, fidelity, consistency, fitness, finish);
+- "no change" as a valid result when the evidence does not support one;
+- stating facts instead of steps for rediscovering them;
+- comparing two versions blind and recording which changes helped.
+
+They are written here in our own words. No code or prompts are copied.
 
 ## License
 
