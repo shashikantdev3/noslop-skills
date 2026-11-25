@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "Agent skills that kill AI slop: rough asks become ready-to-run prompts and specs for any model, and UI briefs become enterprise-grade screens.",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "plugins": [
     {
@@ -42,6 +42,15 @@
       "strict": false,
       "skills": [
         "./skills/prompt-port"
+      ]
+    },
+    {
+      "name": "prompt-evals",
+      "description": "Write a small golden set and pass/fail checks for any prompt or agent, with no framework or vendor needed. Code checks first, yes/no model graders only when needed.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/prompt-evals"
       ]
     }
   ]

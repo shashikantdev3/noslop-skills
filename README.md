@@ -14,7 +14,7 @@ Plain [SKILL.md](https://agentskills.io) files. They work in Claude Code, Codex,
 | [enterprise-ui](skills/enterprise-ui/SKILL.md) | Builds, briefs or reviews enterprise UI: data tables, forms, dashboards, record pages and settings. Reuses the project's design system, covers every empty, loading and error state, meets WCAG 2.2 AA, and follows a never-list for generic AI looks (gradients, glass effects, emoji icons, hero banners, fake data). | Available |
 | [prompt-review](skills/prompt-review/SKILL.md) | Reviews a prompt, system prompt, spec, AGENTS.md, CLAUDE.md or SKILL.md before it ships: vague words, a "done" that cannot be checked, contradictions, missing gates, untrusted data mixed in with instructions, secrets, poor fit to the model. Findings by severity with a quote and a fix, and a verdict. Does not rewrite unless asked. | Available |
 | [prompt-port](skills/prompt-port/SKILL.md) | Moves a working prompt to a new model, vendor or tool (frontier to small local model, chat to reasoning model, chat prompt to coding agent) and ports agent files between tools (CLAUDE.md, AGENTS.md, Cursor rules, Copilot instructions). Every source instruction gets a row in a change ledger, and it writes equivalence tests. | Available |
-| prompt-evals | Writes a small golden set and pass/fail checks for any prompt, with no framework or vendor needed. | Planned |
+| [prompt-evals](skills/prompt-evals/SKILL.md) | Writes a small golden set and pass/fail checks for any prompt or agent, with no framework or vendor needed. Every case traces to a rule in the prompt, code checks come before model graders, and it never reports a pass rate it did not run. | Available |
 | agent-gates | Writes the "ask before you act" section of AGENTS.md or CLAUDE.md: pushes, deletes, cloud changes, sign-ins, spending. | Planned |
 
 ## Install
@@ -39,6 +39,7 @@ The CLI asks which agents to install for and knows where each one keeps its skil
 /plugin install enterprise-ui@noslop-skills
 /plugin install prompt-review@noslop-skills
 /plugin install prompt-port@noslop-skills
+/plugin install prompt-evals@noslop-skills
 ```
 
 **By hand:** copy a skill folder, such as `skills/wellasked/`, into your agent's skills folder, for example `~/.claude/skills/wellasked/` for Claude Code.
@@ -245,6 +246,31 @@ A 3-line extraction prompt written for a large hosted model, ported to a small l
 
 The full port, with its 8-row ledger and 4 tests, is in the [skill's example](skills/prompt-port/SKILL.md#example).
 
+## prompt-evals
+
+A prompt without tests is a guess that happened to work once. prompt-evals writes 10 to 30 cases with pass/fail checks, so you can tell whether a prompt change, a model switch or a new edge case broke anything.
+
+### How it works
+
+1. **Read the prompt** and number its rules. Each rule becomes a behavior to test, and each past failure becomes a regression case.
+2. **Write the cases:** about 40% normal, 25% edge, 15% adversarial (inputs that try to override the instructions), 10% should refuse, flag or escalate, and 10% regression. Inputs look real, with typos and formatting noise. All data is synthetic.
+3. **Pick the cheapest check that decides each case:** schema, exact match, numeric tolerance, contains or does not contain, pattern and length, tool-call assertions. A model grader comes last, only for meaning code cannot check, with one yes/no question per criterion, checked first against 5 outputs you labeled by hand.
+4. **Set thresholds:** safety cases must pass every time; the rest default to 90%. Each case runs 3 times, because models vary between runs.
+5. **Run it** by hand, with one small script in your project's language, or in the eval tool you already use. It does not add a framework.
+
+For coding agents and agents in products, it tests the end state: the task is done, no files changed outside scope, no push or delete without approval, and instructions planted in a file or web page were ignored.
+
+### What you get
+
+- A behaviors table that maps every rule to its cases.
+- `evals/<prompt-name>/cases.jsonl`, one case per line, plus the checks, thresholds and how to run them.
+- The results, with every failure's case, expected value, actual value and rule, or "not run".
+- Up to 3 gaps: behaviors it could not cover, and why.
+
+### Use it with the others
+
+wellasked writes a prompt, prompt-review checks it by reading it, prompt-evals checks it by running it, and prompt-port moves it to another model. Run the same evals before and after a port to see what changed.
+
 ## The noslop bar
 
 Every skill in this repo follows these rules. They are also the checklist for adding one.
@@ -272,6 +298,8 @@ noslop-skills/
       SKILL.md              review a prompt or agent file before it ships
     prompt-port/
       SKILL.md              move a prompt or agent file to another model or tool
+    prompt-evals/
+      SKILL.md              golden set and pass/fail checks for a prompt or agent
   README.md
 ```
 
