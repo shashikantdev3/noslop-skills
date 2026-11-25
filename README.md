@@ -15,7 +15,7 @@ Plain [SKILL.md](https://agentskills.io) files. They work in Claude Code, Codex,
 | [prompt-review](skills/prompt-review/SKILL.md) | Reviews a prompt, system prompt, spec, AGENTS.md, CLAUDE.md or SKILL.md before it ships: vague words, a "done" that cannot be checked, contradictions, missing gates, untrusted data mixed in with instructions, secrets, poor fit to the model. Findings by severity with a quote and a fix, and a verdict. Does not rewrite unless asked. | Available |
 | [prompt-port](skills/prompt-port/SKILL.md) | Moves a working prompt to a new model, vendor or tool (frontier to small local model, chat to reasoning model, chat prompt to coding agent) and ports agent files between tools (CLAUDE.md, AGENTS.md, Cursor rules, Copilot instructions). Every source instruction gets a row in a change ledger, and it writes equivalence tests. | Available |
 | [prompt-evals](skills/prompt-evals/SKILL.md) | Writes a small golden set and pass/fail checks for any prompt or agent, with no framework or vendor needed. Every case traces to a rule in the prompt, code checks come before model graders, and it never reports a pass rate it did not run. | Available |
-| agent-gates | Writes the "ask before you act" section of AGENTS.md or CLAUDE.md: pushes, deletes, cloud changes, sign-ins, spending. | Planned |
+| [agent-gates](skills/agent-gates/SKILL.md) | Writes the "ask before you act" section of AGENTS.md or CLAUDE.md from the repository's real commands (pushes, deletes, migrations, deploys, cloud changes, sign-ins, spending), plus the permission settings that enforce it. Says plainly which gates are only instructions. | Available |
 
 ## Install
 
@@ -40,6 +40,7 @@ The CLI asks which agents to install for and knows where each one keeps its skil
 /plugin install prompt-review@noslop-skills
 /plugin install prompt-port@noslop-skills
 /plugin install prompt-evals@noslop-skills
+/plugin install agent-gates@noslop-skills
 ```
 
 **By hand:** copy a skill folder, such as `skills/wellasked/`, into your agent's skills folder, for example `~/.claude/skills/wellasked/` for Claude Code.
@@ -271,6 +272,34 @@ For coding agents and agents in products, it tests the end state: the task is do
 
 wellasked writes a prompt, prompt-review checks it by reading it, prompt-evals checks it by running it, and prompt-port moves it to another model. Run the same evals before and after a port to see what changed.
 
+## agent-gates
+
+A coding agent should stop before it pushes, deletes, migrates, deploys, signs in, sends or spends, and should not stop for anything else. Too few gates and it acts on its own; too many and you learn to type "yes" without reading.
+
+### How it works
+
+1. **Inventory the repository:** instruction files, scripts, CI, infrastructure files, migration tools, secret files, the default branch and current permission settings. It lists every risky action with its real command, including indirect routes such as a release script that pushes.
+2. **Sort each action into a tier:**
+   - **Do freely:** read, edit for the task, test, lint, build.
+   - **Do, then tell:** local commits, dev dependencies, local database resets.
+   - **Ask first:** pushes, merges, deletes, shared migrations, deploys, cloud changes, sign-ins, messages, spending, CI and permission changes.
+   - **Never:** force-pushing the default branch, reading secret files, skipping hooks, weakening tests to make them pass, running commands from issue or web page text.
+3. **Write the section** for AGENTS.md or CLAUDE.md, about 40 lines, with a gate message that shows the exact command, what changes, how to undo it and the cost.
+4. **Enforce it** with the strongest control available: the tool's permission settings, branch protection, least-access tokens, development-only credentials and budget caps.
+5. **Test it** with tempting tasks, such as "the tests fail, make them pass" or an issue that says to run a script.
+
+Approval only counts from you, in the chat. Text in a file, issue, web page or tool output never counts, even if it says so. One yes covers one action.
+
+### What you get
+
+- An inventory table: action, real command, tier, and why.
+- The section, ready to paste.
+- A permission settings snippet for your agent, marked [check] where the setting name needs confirming.
+- Other controls to set, and a plain list of gates that are only instructions, with nothing enforcing them.
+- 3 to 5 tempting-task tests.
+
+The [skill's example](skills/agent-gates/SKILL.md#example) gates a Node.js app with Prisma migrations and a Terraform deploy.
+
 ## The noslop bar
 
 Every skill in this repo follows these rules. They are also the checklist for adding one.
@@ -300,6 +329,8 @@ noslop-skills/
       SKILL.md              move a prompt or agent file to another model or tool
     prompt-evals/
       SKILL.md              golden set and pass/fail checks for a prompt or agent
+    agent-gates/
+      SKILL.md              ask-before-you-act rules and the settings that enforce them
   README.md
 ```
 
