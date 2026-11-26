@@ -127,7 +127,7 @@ And it ends with the two prompts that keep a multi-session build on track:
 
 ```text
 Kickoff: Read docs/BUILD-SPEC.md in full. It is the single source of truth. Follow section 0,
-respect every gate, and keep docs/PROGRESS.md updated. Start with phase 0.
+respect every gate, and keep docs/PROGRESS.md updated. Start with the first phase in section 9.
 
 Resume:  Read docs/BUILD-SPEC.md and docs/PROGRESS.md. Tell me in three lines where we are,
 then continue with the next phase. Same rules and gates.
@@ -355,6 +355,8 @@ Every skill in this repo follows these rules. They are also the checklist for ad
 ```text
 noslop-skills/
   assets/                   README images (SVG)
+  evals/
+    wellasked/              golden set for wellasked: 14 cases, grader questions
   .claude-plugin/
     marketplace.json        Claude Code marketplace: one plugin per skill
   skills/

@@ -1,6 +1,6 @@
 ---
 name: wellasked
-description: "Turn a rough request into a ready-to-run prompt, build spec or system prompt for any model or coding agent (Claude Code, Codex, Copilot, Cursor, ChatGPT, Gemini or a small local model). Use when someone asks to write, improve or structure a prompt, a spec for a coding agent, or instructions for an AI agent, or pastes a messy idea and wants it turned into something an agent can run. Asks at most 3 questions, each with options and a recommended default, and lists its assumptions instead of asking the rest."
+description: "Turn a rough request into a ready-to-run prompt, build spec or system prompt for any model or coding agent (Claude Code, Codex, Copilot, Cursor, ChatGPT, Gemini or a small local model). Use when someone asks to write, rewrite or structure a prompt, a spec for a coding agent, or instructions for an AI agent, or pastes a messy idea and wants it turned into something an agent can run. Asks at most 3 questions, each with options and a recommended default, and lists its assumptions instead of asking the rest."
 ---
 
 # wellasked
@@ -35,7 +35,7 @@ A problem well asked is half solved. The job is to remove every place where the 
   - (e) instructions for an AI agent or a system prompt;
   - (f) a data or document transformation.
 - Identify the target tool, meaning where the prompt will run. If it is unknown and does not change much, assume a capable general chat model and say so.
-- If the person brings an existing prompt to improve and it already does the job, say so and change only what the evidence supports. A change made for its own sake makes a working prompt worse.
+- If the person brings an existing prompt to improve and it already does the job, say so and change only what the evidence supports. A change made for its own sake makes a working prompt worse. If they want a critique rather than a rewrite, use prompt-review.
 
 ### Step 2: Suggest a model, only when it helps
 Suggest a model when the person has not picked one, or when their pick is a poor fit for the task. Otherwise skip this step.
@@ -135,7 +135,7 @@ When two versions both pass, prefer the shorter one. A short prompt that is righ
 
 ### Step 9: Deliver
 In this order:
-1. The prompt or spec. Put it in a code block, or in a file when it is longer than about 150 lines.
+1. The prompt or spec. Put it in a code block, or in a file when it is longer than about 150 lines. Shape B goes in docs/BUILD-SPEC.md; ask before overwriting an existing one. Without file tools, use one code block.
 2. For shape B, the kickoff prompt and the resume prompt.
 3. The assumptions you made, at most 5 bullets.
 4. One line on how to use it: where to paste it, and which mode or model.
@@ -156,13 +156,13 @@ Constraints:
 - <constraint, with its reason>
 Never:
 - <specific failure to avoid>
+If something essential is missing, ask one short question first; otherwise state your assumptions and proceed.
+If a tool or step fails, try one alternative, then stop and report what happened.
 Done when:
 - <checkable criterion>
-If a tool or step fails, try one alternative, then stop and report what happened.
 Before you finish, check your output against "Done when".
 Output format:
 <exact structure>
-If something essential is missing, ask one short question first; otherwise state your assumptions and proceed.
 ```
 
 ### B. Build spec for a coding agent (save it as docs/BUILD-SPEC.md)
@@ -189,7 +189,7 @@ Sections:
 
 Kickoff prompt:
 ```text
-Read docs/BUILD-SPEC.md in full. It is the single source of truth. Follow section 0, respect every gate, and keep docs/PROGRESS.md updated. Start with phase 0.
+Read docs/BUILD-SPEC.md in full. It is the single source of truth. Follow section 0, respect every gate, and keep docs/PROGRESS.md updated. Start with the first phase in section 9.
 ```
 
 Resume prompt (for a new chat):
@@ -209,15 +209,6 @@ Rules:
 Output: JSON that matches <schema>, and no other text.
 Limits: at most <n> tool calls; stop and report when <condition>.
 ```
-
-## Anti-patterns to fix when you see them
-- Wishes instead of criteria ("make it top notch").
-- A wall of rules with no priorities. Mark the non-negotiables.
-- Asking the model to be creative about facts.
-- The deliverable hidden in the middle of the prompt.
-- Ten clarifying questions before any value.
-- One giant chat prompt for a multi-day build, with no file, no gates and no resume prompt.
-- Secrets, or real personal or customer data, in the prompt.
 
 ## Examples
 
@@ -239,7 +230,7 @@ Request: "make me a prompt for copilot to build a ticket triage agent, should be
 Request: "give me a prompt for a clean modern sales dashboard, no AI looking stuff"
 
 1. **Goal:** a sales manager sees this quarter's pipeline at a glance. **Shape:** A.
-2. **No questions:** every gap has a safe default, so list assumptions instead.
+2. **No questions:** every gap has a safe default, so list assumptions instead, starting with the target: [assumption: a coding agent such as Claude Code or Cursor builds it].
 3. **"Clean, modern, no AI looking stuff" becomes:**
    - one accent color on a neutral palette; no gradients, glass effects, emoji or decorative illustrations;
    - 4 KPI tiles, one trend chart and one sortable, filterable table of open deals;

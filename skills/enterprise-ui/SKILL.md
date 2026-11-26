@@ -20,7 +20,7 @@ Pick the mode from the request:
 2. **Use what exists.** The project's design system, tokens and components win over anything new. Never add a second component library or icon set.
 3. **Consistency over novelty.** The same thing looks and behaves the same everywhere.
 4. **Density with control.** Show useful data above the fold. Offer a compact density for data-heavy screens.
-5. **Every state is designed:** empty, loading, partial, error, no permission, stale data, success.
+5. **Every state is designed:** empty, no results, loading, partial, error, no permission, stale data, success. This is the one list of states; the checklist and the brief template refer to it.
 6. **Accessible by default:** WCAG 2.2 AA, full keyboard use, visible focus, real labels, never color alone.
 7. **Real data shapes.** Long names, big numbers, zero, null, 10,000 rows. Never lorem ipsum, and never invented numbers presented as real.
 8. **Safe actions.** Destructive and bulk actions name what they affect and wait for confirmation. Offer undo where you can.
@@ -40,7 +40,7 @@ Pick the mode from the request:
 - Look before you choose: the package manifest, theme or token files, the Tailwind config, the existing screens and components.
 - Match what you find: its components, spacing, colors, icons and patterns.
 - Only if nothing exists, recommend one option with a one-line reason:
-  - React with Tailwind: shadcn/ui.
+  - React with Tailwind: shadcn/ui, with TanStack Table for data-heavy tables.
   - Data-heavy admin apps: Ant Design, or MUI with its data grid.
   - Apps that sit beside Microsoft 365: Fluent UI.
   - Large, dense, regulated products: IBM Carbon.
@@ -56,7 +56,7 @@ Ask at most 3 questions, in one message, each with 2 to 4 options and the recomm
 Otherwise proceed and list your assumptions at the end.
 
 ### Step 4: Specify the screen
-Before writing code, write a short spec. Use it as the Brief output in Brief mode.
+Before writing code, write a short spec. In Brief mode, the spec feeds the brief template, and the filled template is the output.
 - The layout pattern and regions.
 - The components, from the chosen library.
 - The data: fields, formats, sample data.
@@ -67,7 +67,7 @@ Before writing code, write a short spec. Use it as the Brief output in Brief mod
 Use the patterns below.
 
 ### Step 5: Build or brief
-- **Build:** follow the spec, the foundations and the never-list. Use realistic sample data generated with a fixed seed.
+- **Build:** follow the spec, the foundations and the never-list. Use realistic sample data generated with a fixed seed. Label it as sample data on screen, and never ship it to production.
 - **Brief:** fill the template at the end.
 
 ### Step 6: Review
@@ -202,7 +202,7 @@ Report each finding with a severity, where it is, and the fix:
 
 Check each of these:
 - Can each named task be done without guessing, and in how many steps?
-- Does every view have its empty, loading, error and no-permission states?
+- Does every view have each state from Principle 5 that applies to it?
 - Does everything work with only the keyboard, with focus visible and in a logical order?
 - Do text and controls meet the contrast ratios? Is status shown without relying on color?
 - Do numbers align right with units, and are dates in the user's locale and time zone?
@@ -218,7 +218,7 @@ Stack: <framework>, <component library and version, from the project>. Read its 
 Layout: <pattern and regions>.
 Data: <fields with formats>. Use realistic sample data generated with a fixed seed; never lorem ipsum.
 Actions: primary <action>; secondary <actions>. Destructive and bulk actions confirm with the object and count.
-States: empty, loading (skeleton), error (retry), no results, no permission<, others>.
+States: each that applies of empty, no results, loading (skeleton), partial, error (retry), no permission, stale data, success.
 Accessibility: WCAG 2.2 AA, full keyboard use, visible focus, labels on every control, status never by color alone.
 Responsive: <desktop from 1280 px | down to 360 px>.
 Never: gradients, glass effects, emoji icons, hero banners, identical card grids, a second component library.
@@ -234,7 +234,7 @@ Request: "build an admin page to manage users, make it look professional, not li
    - columns for name, email, role, status and last active, with sort, search, and filters for role and status kept in the URL;
    - status as a badge with text and color;
    - row selection with a bulk bar: "Deactivate 4 users" opens a dialog that names the count;
-   - states for no users yet, no results, a failed load with retry, and a skeleton while loading;
+   - states for no users yet, no results, a failed load with retry, a skeleton while loading, and a no-permission page for non-admins;
    - 60 seeded users, including long names, users who never signed in, and a deactivated admin;
    - no gradients, no emoji, no hero header, one accent color.
 4. **Deliver** the code, then the assumptions (for example, that only admins can see this page), and what was checked: a keyboard pass and screenshots at 1280 and 1440 px.
