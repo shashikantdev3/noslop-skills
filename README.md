@@ -1,6 +1,6 @@
-<h1 align="center">noslop-skills</h1>
+<h1 align="center">wellasked</h1>
 
-<p align="center"><strong>Agent skills that kill AI slop.</strong></p>
+<p align="center"><strong>Agent skills that remove the guessing.</strong></p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-2da44e" alt="License: Apache 2.0"></a>
@@ -10,10 +10,10 @@
 </p>
 
 <p align="center">
-  <a href="#install"><img src="assets/install.svg" alt="Install every skill: npx skills add shashikantdev3/noslop-skills" width="640"></a>
+  <a href="#install"><img src="assets/install.svg" alt="Install every skill: npx skills add shashikantdev3/wellasked" width="640"></a>
 </p>
 
-**AI slop** is what you get when a model has to guess: vague prompts, specs that say "robust" and "scalable" with nothing checkable, purple-gradient dashboards, invented facts, agents that push to git without asking. **noslop-skills** remove the guessing. Each one turns a rough, human ask into something specific enough that any model or coding agent can do it right the first time.
+**AI slop** is what you get when a model has to guess: vague prompts, specs that say "robust" and "scalable" with nothing checkable, purple-gradient dashboards, invented facts, agents that push to git without asking. These skills remove the guessing. Each one turns a rough, human ask into something specific enough that any model or coding agent can do it right the first time.
 
 - **Prompt skills** write, review, test and port prompts: a rough ask becomes a prompt, spec or system prompt, gets read for gaps, runs against a golden set, and moves to a new model without losing what it does.
 - **Agent and UI skills** put ask-before-you-act gates on coding agents, and keep app screens dense, accessible and free of generic AI looks.
@@ -31,7 +31,7 @@ Plain [SKILL.md](https://agentskills.io) files. They work in Claude Code, Codex,
 - [Install](#install)
 - Prompt skills: [wellasked](#wellasked), [prompt-review](#prompt-review), [prompt-port](#prompt-port), [prompt-evals](#prompt-evals)
 - Agent and UI skills: [agent-gates](#agent-gates), [enterprise-ui](#enterprise-ui)
-- [The noslop bar](#the-noslop-bar)
+- [The quality bar](#the-quality-bar)
 - [Repository layout](#repository-layout)
 - [Add a skill](#add-a-skill)
 - [Credits](#credits)
@@ -88,10 +88,10 @@ It asks 2 questions, each with a recommended default (how big an export can get,
 
 ```bash
 # every skill in this repo, for the current project
-npx skills add shashikantdev3/noslop-skills
+npx skills add shashikantdev3/wellasked
 
 # one skill, for all your projects
-npx skills add shashikantdev3/noslop-skills --skill wellasked -g
+npx skills add shashikantdev3/wellasked --skill wellasked -g
 ```
 
 The CLI asks which agents to install for and knows where each one keeps its skills.
@@ -99,13 +99,13 @@ The CLI asks which agents to install for and knows where each one keeps its skil
 **Claude Code, as a plugin:**
 
 ```text
-/plugin marketplace add shashikantdev3/noslop-skills
-/plugin install wellasked@noslop-skills
-/plugin install enterprise-ui@noslop-skills
-/plugin install prompt-review@noslop-skills
-/plugin install prompt-port@noslop-skills
-/plugin install prompt-evals@noslop-skills
-/plugin install agent-gates@noslop-skills
+/plugin marketplace add shashikantdev3/wellasked
+/plugin install wellasked@wellasked
+/plugin install enterprise-ui@wellasked
+/plugin install prompt-review@wellasked
+/plugin install prompt-port@wellasked
+/plugin install prompt-evals@wellasked
+/plugin install agent-gates@wellasked
 ```
 
 **By hand:** copy a skill folder, such as `skills/wellasked/`, into your agent's skills folder, for example `~/.claude/skills/wellasked/` for Claude Code.
@@ -231,13 +231,7 @@ It ends with its assumptions and what it checked: a keyboard-only pass and scree
 
 ### How it differs from design-led skills
 
-Two good skills already take on AI-looking UI from the design side:
-- Anthropic's [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) aims for a distinctive look for a branded page.
-- [unslop](https://github.com/heydamir/unslop) by Damir Sokolovsky takes a vibecoded screen, including a landing page or a live site, and redesigns it pass by pass into one with its own character.
-
-Both push a screen toward character, and they do that well. Enterprise screens need the opposite: familiar patterns, density, consistency, accessibility and complete states. Use frontend-design or unslop when a page should stand out, and enterprise-ui for the app behind the login, where people work for hours and every screen should behave the same.
-
-noslop-skills is an independent project and is not affiliated with unslop.
+Design-led skills, such as Anthropic's [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design), aim for a distinctive look for a branded page, and they do that well. Enterprise screens need the opposite: familiar patterns, density, consistency, accessibility and complete states. Use a design-led skill when a page should stand out, and enterprise-ui for the app behind the login, where people work for hours and every screen should behave the same.
 
 ## prompt-review
 
@@ -379,7 +373,7 @@ Approval only counts from you, in the chat. Text in a file, issue, web page or t
 
 The [skill's example](skills/agent-gates/SKILL.md#example) gates a Node.js app with Prisma migrations and a Terraform deploy.
 
-## The noslop bar
+## The quality bar
 
 Every skill in this repo follows these rules. They are also the checklist for adding one.
 
@@ -394,7 +388,7 @@ Every skill in this repo follows these rules. They are also the checklist for ad
 ## Repository layout
 
 ```text
-noslop-skills/
+wellasked/
   assets/                   README images (SVG)
   evals/
     wellasked/              golden set for wellasked: 14 cases, grader questions
@@ -421,7 +415,7 @@ noslop-skills/
 
 1. Create `skills/<name>/SKILL.md`. The name is lowercase with hyphens and matches the folder.
 2. Start the file with frontmatter: `name`, and a `description` that says what the skill does and when to use it.
-3. Check it against [the noslop bar](#the-noslop-bar).
+3. Check it against [the quality bar](#the-quality-bar).
 4. Try it in at least two agents, for example Claude Code and Codex, on three real requests.
 5. Add a plugin entry to `.claude-plugin/marketplace.json` and a row to the [Skills](#skills) table.
 

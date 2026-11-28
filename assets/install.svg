@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="84" viewBox="0 0 640 84" role="img" aria-label="Install every skill: npx skills add shashikantdev3/noslop-skills">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="84" viewBox="0 0 640 84" role="img" aria-label="Install every skill: npx skills add shashikantdev3/wellasked">
   <rect x="0.5" y="0.5" width="639" height="83" rx="10" fill="#1f2328" stroke="#3d444d"/>
   <circle cx="26" cy="42" r="4" fill="#6e7781"/>
   <circle cx="40" cy="42" r="4" fill="#6e7781"/>
   <circle cx="54" cy="42" r="4" fill="#6e7781"/>
   <line x1="74" y1="26" x2="74" y2="58" stroke="#3d444d"/>
-  <text x="92" y="48" font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="18" fill="#e6edf3"><tspan fill="#8b949e">$ </tspan>npx skills add shashikantdev3/noslop-skills</text>
+  <text x="92" y="48" font-family="ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', monospace" font-size="18" fill="#e6edf3"><tspan fill="#8b949e">$ </tspan>npx skills add shashikantdev3/wellasked</text>
 </svg>

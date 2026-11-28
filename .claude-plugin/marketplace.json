@@ -1,11 +1,11 @@
 {
-  "name": "noslop-skills",
+  "name": "wellasked",
   "owner": {
     "name": "shashikantdev3"
   },
   "metadata": {
-    "description": "Agent skills that kill AI slop: rough asks become ready-to-run prompts and specs for any model, and UI briefs become enterprise-grade screens.",
-    "version": "0.8.0"
+    "description": "Agent skills that remove the guessing: rough asks become ready-to-run prompts and specs for any model, prompts get reviewed, tested and ported, coding agents ask before risky actions, and UI briefs become enterprise-grade screens.",
+    "version": "0.9.0"
   },
   "plugins": [
     {
