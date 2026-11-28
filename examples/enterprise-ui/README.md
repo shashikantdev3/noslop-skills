@@ -12,4 +12,6 @@ Both screenshots are 1440 by 900 px.
 
 ## Try it
 
-Download both files and open them in a browser. after.html loads nothing from the network. Add one of these to the address to see each state: `?state=empty`, `?state=loading`, `?state=error`, `?state=noaccess`. Search for something that does not exist to see the no-results state.
+Open them live: [before.html](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/before.html) and [after.html](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html). You can also download both files and open them locally; after.html loads nothing from the network.
+
+Each state has its own link: [empty](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=empty), [loading](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=loading), [error](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=error), [no permission](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=noaccess). Search for something that does not exist to see the no-results state.

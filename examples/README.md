@@ -8,4 +8,4 @@ Real runs, not mockups. Each "after" was produced by Claude Opus 5.5 following o
 | [wellasked](wellasked/) | "i need a prompt for codex ... export to csv ... fast and secure and handle big data ... make it production ready" | 2 questions with recommended defaults, then a gated, testable Codex prompt with numbers in its "Done when" |
 | [prompt-review](prompt-review/) | A support-bot system prompt that says "NEVER say you don't know" and refunds any unhappy customer | Not ready: 4 blockers, 4 majors, 2 minors, then a revised prompt with every change marked |
 
-To try the pages, download them and open them in a browser. On after.html, add `?state=empty`, `?state=loading`, `?state=error` or `?state=noaccess` to the address to see each state.
+Try the pages live: [before.html](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/before.html) and [after.html](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html). On after.html, add `?state=empty`, `?state=loading`, `?state=error` or `?state=noaccess` to the address to see each state.

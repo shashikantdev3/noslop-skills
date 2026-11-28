@@ -49,15 +49,15 @@ Real runs, not mockups. Each "after" was produced by Claude Opus 5.5 following t
     <td width="50%"><img src="examples/enterprise-ui/after.png" alt="After: a plain app shell with a users table of name, email, role, status badges, last active and date added, with search and filters"></td>
   </tr>
   <tr>
-    <td align="center">Before</td>
-    <td align="center">After</td>
+    <td align="center">Before (<a href="https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/before.html">try it live</a>)</td>
+    <td align="center">After (<a href="https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html">try it live</a>)</td>
   </tr>
 </table>
 
 - The hero banner, made-up KPIs, gradients, glass effects and emoji are gone.
 - A centered card grid became a sortable table, with search and role and status filters kept in the URL.
 - "Delete" behind "Are you sure?" became "Deactivate 4 users", with the count in the dialog and an Undo.
-- Empty, loading, error, no-permission and no-results states, 60 seeded users labeled as sample data, and contrast checked against WCAG 2.2 AA.
+- Empty, loading, error, no-permission and no-results states, 60 seeded users labeled as sample data, and contrast checked against WCAG 2.2 AA. See each state live: [empty](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=empty), [loading](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=loading), [error](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=error), [no permission](https://shashikantdev3.github.io/wellasked/examples/enterprise-ui/after.html?state=noaccess).
 
 **wellasked** turns this voice-typed ask into a prompt for Codex:
 
@@ -389,7 +389,7 @@ Every skill in this repo follows these rules. They are also the checklist for ad
 
 ```text
 wellasked/
-  assets/                   README images (SVG)
+  assets/                   README images, and the social preview with its HTML source
   evals/
     wellasked/              golden set for wellasked: 14 cases, grader questions
   examples/                 before and after runs of enterprise-ui, wellasked and prompt-review
