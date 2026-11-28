@@ -196,7 +196,13 @@ It ends with its assumptions and what it checked: a keyboard-only pass and scree
 
 ### How it differs from design-led skills
 
-Skills such as Anthropic's [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) aim for a distinctive look for a branded page, and they do that well. Enterprise screens need the opposite: familiar patterns, density, consistency and complete states. Use frontend-design for the landing page and enterprise-ui for the app behind the login.
+Two good skills already take on AI-looking UI from the design side:
+- Anthropic's [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) aims for a distinctive look for a branded page.
+- [unslop](https://github.com/heydamir/unslop) by Damir Sokolovsky takes a vibecoded screen, including a landing page or a live site, and redesigns it pass by pass into one with its own character.
+
+Both push a screen toward character, and they do that well. Enterprise screens need the opposite: familiar patterns, density, consistency, accessibility and complete states. Use frontend-design or unslop when a page should stand out, and enterprise-ui for the app behind the login, where people work for hours and every screen should behave the same.
+
+noslop-skills is an independent project and is not affiliated with unslop.
 
 ## prompt-review
 
