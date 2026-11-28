@@ -151,8 +151,10 @@ Order findings by severity, then by position in the prompt. Keep each cell to on
 
 When the author replies "fix":
 - change only what the findings named;
-- mark every change;
-- keep the rest word for word.
+- start each changed or added line with a marker that names its finding, such as [#2 changed] or [#7 added], and say that the markers come out before it ships;
+- put facts the author must supply in capitalized placeholders, such as [REFUND LIMIT], never in invented values;
+- keep the rest word for word;
+- after the revised prompt, list what changed, one line per finding.
 
 ## Example
 Prompt under review:

@@ -70,8 +70,10 @@ Facts beat procedures. When you already know something the model needs (a path, 
 ### Step 4: Ask only what matters
 Ask a question only when all three are true:
 - the answer changes the result substantially;
-- there is no reasonable default;
+- no default is safe to assume without telling the person first;
 - it cannot be found in the material provided.
+
+You still offer your best guess as the recommended option. The question exists so the person can catch a wrong guess before the work is built on it.
 
 When you do ask:
 - ask at most 3 questions, all in one message;
@@ -87,7 +89,7 @@ Questions usually worth asking:
 
 ### Step 5: Choose the shape
 - **Shape A, a single-task prompt:** one task, one sitting.
-- **Shape B, a build spec plus kickoff and resume prompts:** many steps or sessions, a coding agent, infrastructure, or anything costly to redo.
+- **Shape B, a build spec plus kickoff and resume prompts:** work that spans many sessions, a new product or service, infrastructure, or anything costly to redo. A change a coding agent can finish in one sitting is shape A, with gates, tests and a done check.
 - **Shape C, agent instructions:** a system prompt for an AI agent inside a product.
 
 ### Step 6: Write it
@@ -119,7 +121,7 @@ Taste words need criteria too. When the request involves UI or writing, translat
 |---|---|
 | Small or local model | Short; numbered steps; one task per prompt; an exact output template; one worked example |
 | Reasoning model | Goal, constraints and done criteria; do not script every step; ask it to state its assumptions |
-| Coding agent (Claude Code, Codex, Copilot agent mode, Cursor) | A spec file in the repo; a progress log; gates; permissions (ask before sign-in, cloud changes, git pushes, deletes); "check the docs, do not guess"; tests; a definition of done; a resume prompt |
+| Coding agent (Claude Code, Codex, Copilot agent mode, Cursor) | Gates; permissions (ask before sign-in, cloud changes, git pushes, deletes); "check the docs, do not guess"; tests; a definition of done. For work across sessions, also a spec file in the repo, a progress log and a resume prompt |
 | Chat assistant (ChatGPT, Gemini, Claude, Copilot Chat) | A one-line role, the context, the task and the format; one clarifying question only if essential |
 
 ### Step 8: Review before delivering

@@ -26,6 +26,7 @@ Plain [SKILL.md](https://agentskills.io) files. They work in Claude Code, Codex,
 
 ## Contents
 
+- [Before and after](#before-and-after)
 - [Skills](#skills)
 - [Install](#install)
 - Prompt skills: [wellasked](#wellasked), [prompt-review](#prompt-review), [prompt-port](#prompt-port), [prompt-evals](#prompt-evals)
@@ -35,6 +36,40 @@ Plain [SKILL.md](https://agentskills.io) files. They work in Claude Code, Codex,
 - [Add a skill](#add-a-skill)
 - [Credits](#credits)
 - [License](#license)
+
+## Before and after
+
+Real runs, not mockups. Each "after" was produced by Claude Opus 5.5 following the skill and is shown unedited. The "before" page was written by hand to pack in common AI-slop patterns. All data is invented. See [examples](examples/) for the full files.
+
+**enterprise-ui** rebuilds a vibecoded admin page:
+
+<table>
+  <tr>
+    <td width="50%"><img src="examples/enterprise-ui/before.png" alt="Before: a purple-to-pink gradient hero saying Welcome back, Admin, glowing KPI tiles with made-up numbers, and emoji avatar cards with lorem ipsum"></td>
+    <td width="50%"><img src="examples/enterprise-ui/after.png" alt="After: a plain app shell with a users table of name, email, role, status badges, last active and date added, with search and filters"></td>
+  </tr>
+  <tr>
+    <td align="center">Before</td>
+    <td align="center">After</td>
+  </tr>
+</table>
+
+- The hero banner, made-up KPIs, gradients, glass effects and emoji are gone.
+- A centered card grid became a sortable table, with search and role and status filters kept in the URL.
+- "Delete" behind "Are you sure?" became "Deactivate 4 users", with the count in the dialog and an Undo.
+- Empty, loading, error, no-permission and no-results states, 60 seeded users labeled as sample data, and contrast checked against WCAG 2.2 AA.
+
+**wellasked** turns this voice-typed ask into a prompt for Codex:
+
+```text
+ok so i need a prompt for codex, we got this node express app with postgres and i want a export
+to csv button on the orders page, admins only. it shoud be fast and secure and handle big data,
+and dont break anything. make it production ready
+```
+
+It asks 2 questions, each with a recommended default (how big an export can get, and what goes in the file). After "go", it writes a single-task prompt where "fast and secure" has become checks: the admin check enforced on the server, rows streamed from Postgres with a cap of 1 million, a guard against spreadsheet formula injection, gates before migrations or dependency upgrades, a list of tests, and a "Done when" with numbers. [Full run](examples/wellasked/).
+
+**prompt-review** checks a support-bot system prompt that says "NEVER say you don't know" and refunds any unhappy customer. Verdict: Not ready, with 4 blockers, 4 majors and 2 minors. After "fix", every changed line is marked with the finding it answers, and the facts only the author knows are left as placeholders such as `[REFUND LIMIT]`. [Full run](examples/prompt-review/).
 
 ## Skills
 
@@ -363,6 +398,7 @@ noslop-skills/
   assets/                   README images (SVG)
   evals/
     wellasked/              golden set for wellasked: 14 cases, grader questions
+  examples/                 before and after runs of enterprise-ui, wellasked and prompt-review
   .claude-plugin/
     marketplace.json        Claude Code marketplace: one plugin per skill
   skills/

@@ -1,0 +1,90 @@
+<!doctype html>
+<!-- BEFORE: a deliberately vibecoded admin page, written by hand to show common AI-slop patterns. All data is invented. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>✨ UserHub AI</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: radial-gradient(circle at 20% 10%, #3b1d6e, #0f0a1f 60%); color: #e9e3ff; min-height: 100vh; }
+  .side { position: fixed; top: 0; left: 0; bottom: 0; width: 220px; padding: 28px 18px; background: rgba(255,255,255,0.06); backdrop-filter: blur(18px); border-right: 1px solid rgba(167,139,250,0.4); }
+  .logo { font-weight: 900; font-size: 22px; background: linear-gradient(90deg,#a78bfa,#60a5fa); -webkit-background-clip: text; color: transparent; margin-bottom: 32px; }
+  .side a { display: block; padding: 11px 14px; margin-bottom: 7px; border-radius: 14px; color: #c4b5fd; text-decoration: none; font-size: 15px; }
+  .side a.on { background: linear-gradient(90deg,#7c3aed,#2563eb); color: #fff; box-shadow: 0 0 22px rgba(139,92,246,0.7); }
+  main { margin-left: 220px; padding: 34px 41px; }
+  .hero { padding: 38px; border-radius: 28px; background: linear-gradient(120deg,#7c3aed 0%,#db2777 50%,#2563eb 100%); box-shadow: 0 20px 60px rgba(124,58,237,0.5); margin-bottom: 29px; }
+  .hero h1 { margin: 0 0 8px; font-size: 40px; font-weight: 900; letter-spacing: -1px; }
+  .hero p { margin: 0; opacity: .9; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 99px; background: rgba(255,255,255,.2); font-size: 12px; margin-bottom: 14px; animation: pulse 1.6s infinite; }
+  @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(255,255,255,0); transform: scale(1.05); } }
+  .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; margin-bottom: 33px; }
+  .kpi { padding: 22px; border-radius: 22px; background: rgba(255,255,255,0.07); backdrop-filter: blur(12px); border: 1px solid rgba(167,139,250,.35); box-shadow: 0 0 30px rgba(96,165,250,.25); }
+  .kpi .label { text-transform: uppercase; letter-spacing: 3px; font-size: 11px; color: #a78bfa; }
+  .kpi .num { font-size: 34px; font-weight: 900; margin: 8px 0 4px; background: linear-gradient(90deg,#fff,#c4b5fd); -webkit-background-clip: text; color: transparent; }
+  .kpi .up { color: #34d399; font-size: 13px; }
+  .bar { display: flex; gap: 13px; margin-bottom: 24px; }
+  .bar input { flex: 1; padding: 14px 18px; border-radius: 16px; border: 1px solid rgba(167,139,250,.5); background: rgba(255,255,255,.08); color: #fff; font-size: 15px; }
+  .btn { padding: 14px 22px; border: 0; border-radius: 16px; background: linear-gradient(90deg,#8b5cf6,#ec4899); color: #fff; font-weight: 800; cursor: pointer; box-shadow: 0 0 24px rgba(236,72,153,.6); }
+  .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 21px; }
+  .card { padding: 24px; border-radius: 24px; background: rgba(255,255,255,0.07); backdrop-filter: blur(12px); border: 1px solid rgba(167,139,250,.3); box-shadow: 0 10px 40px rgba(0,0,0,.35); text-align: center; transition: transform .3s; }
+  .card:hover { transform: translateY(-8px) scale(1.02); }
+  .avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 12px; background: linear-gradient(135deg,#a78bfa,#f472b6); display: grid; place-items: center; font-size: 28px; }
+  .card h3 { margin: 0 0 4px; font-size: 18px; font-weight: 800; }
+  .card .mail { color: #a5b4fc; font-size: 13px; margin-bottom: 10px; }
+  .card .bio { color: #c4b5fd; font-size: 13px; margin-bottom: 14px; }
+  .pill { display: inline-block; padding: 4px 10px; border-radius: 99px; font-size: 12px; margin: 0 3px; }
+  .pill.g { background: #10b98133; color: #6ee7b7; } .pill.r { background: #ef444433; color: #fca5a5; } .pill.p { background: #8b5cf633; color: #c4b5fd; }
+  .del { margin-top: 14px; padding: 8px 14px; border: 0; border-radius: 12px; background: #ef4444; color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<nav class="side">
+  <div class="logo">UserHub ✨ AI</div>
+  <a href="#">🏠 Dashboard</a>
+  <a href="#" class="on">👥 Users</a>
+  <a href="#">📊 Analytics</a>
+  <a href="#">🚀 Growth</a>
+  <a href="#">⚙️ Settings</a>
+</nav>
+<main>
+  <section class="hero">
+    <span class="badge">✨ New: AI-powered insights</span>
+    <h1>Welcome back, Admin! 👋</h1>
+    <p>Supercharge your team management with seamless, effortless user control. 🚀</p>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi"><div class="label">Total Users</div><div class="num">12,847</div><div class="up">▲ 24.5% 🔥</div></div>
+    <div class="kpi"><div class="label">Active Now</div><div class="num">3,291</div><div class="up">▲ 12.1% 📈</div></div>
+    <div class="kpi"><div class="label">Engagement</div><div class="num">94.7%</div><div class="up">▲ 8.3% 💪</div></div>
+    <div class="kpi"><div class="label">AI Score</div><div class="num">A+</div><div class="up">▲ Amazing! 🎉</div></div>
+  </section>
+
+  <div class="bar">
+    <input placeholder="🔍 Search users with AI magic...">
+    <button class="btn">✨ Add User</button>
+  </div>
+
+  <section class="grid" id="grid"></section>
+</main>
+<script>
+  const users = [
+    ['John Doe', 'john@example.com', 'Admin', true], ['Jane Smith', 'jane@example.com', 'Editor', true],
+    ['Alex Johnson', 'alex@example.com', 'Viewer', false], ['Sarah Lee', 'sarah@example.com', 'Editor', true],
+    ['Mike Brown', 'mike@example.com', 'Viewer', true], ['Emily Davis', 'emily@example.com', 'Admin', false]
+  ];
+  const emoji = ['😎', '🦄', '🐱', '🌟', '🎸', '🍕'];
+  document.getElementById('grid').innerHTML = users.map((u, i) => `
+    <div class="card">
+      <div class="avatar">${emoji[i]}</div>
+      <h3>${u[0]}</h3>
+      <div class="mail">${u[1]}</div>
+      <div class="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+      <span class="pill p">${u[2]}</span>
+      <span class="pill ${u[3] ? 'g' : 'r'}">${u[3] ? 'Active' : 'Inactive'}</span><br>
+      <button class="del" onclick="confirm('Are you sure?') && this.closest('.card').remove()">🗑️ Delete</button>
+    </div>`).join('');
+</script>
+</body>
+</html>

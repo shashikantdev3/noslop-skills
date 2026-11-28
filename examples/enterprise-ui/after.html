@@ -1,0 +1,1189 @@
+<!doctype html>
+<!-- AFTER: the same admin users page rebuilt with the enterprise-ui skill. Plain HTML, CSS and JS. All data is generated sample data. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Users · Admin</title>
+<style>
+  :root {
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+    --gray-0: #ffffff;
+    --gray-25: #f9fafb;
+    --gray-50: #f3f4f6;
+    --gray-100: #e5e7eb;
+    --gray-200: #d1d5db;
+    --gray-500: #7b8390;
+    --gray-600: #545b66;
+    --gray-700: #3b414a;
+    --gray-900: #14171c;
+
+    --accent: #1f5bc4;
+    --accent-hover: #184aa3;
+    --accent-subtle: #ebf1fc;
+    --accent-border: #b9cdf0;
+
+    --success-fg: #146c36;
+    --success-bg: #e6f4eb;
+    --warning-fg: #8a4700;
+    --warning-bg: #fdf0db;
+    --neutral-fg: #4a515c;
+    --neutral-bg: #eceef1;
+    --danger: #b42318;
+    --danger-hover: #912018;
+    --danger-bg: #fef0ee;
+    --danger-border: #f4c3bd;
+
+    --focus: #1f5bc4;
+    --radius: 6px;
+    --topbar-h: 48px;
+    --nav-w: 216px;
+    --row-h: 40px;
+  }
+  body.nav-collapsed { --nav-w: 56px; }
+  body.density-compact { --row-h: 32px; }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { color-scheme: light; }
+  body { margin: 0; font-family: var(--font); font-size: 14px; line-height: 1.45; color: var(--gray-900); background: var(--gray-0); }
+  h1, h2, p { margin: 0; }
+  button, input, select { font: inherit; color: inherit; }
+  a { color: var(--accent); }
+  [hidden] { display: none !important; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .sr-only, body.nav-collapsed .nav-label {
+    position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .icon { display: block; flex: none; }
+  .muted { color: var(--gray-600); }
+  .mono { font-family: var(--mono); font-size: 13px; white-space: nowrap; }
+
+  .skip-link { position: absolute; left: 8px; top: -48px; z-index: 50; padding: 6px 12px; background: var(--gray-0); border: 1px solid var(--gray-500); border-radius: var(--radius); }
+  .skip-link:focus { top: 8px; }
+
+  /* Top bar */
+  .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 8px; height: var(--topbar-h); padding: 0 16px 0 12px; background: var(--gray-0); border-bottom: 1px solid var(--gray-100); }
+  .product { font-size: 15px; font-weight: 600; }
+  .spacer { flex: 1; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 8px; font-size: 12px; color: var(--gray-600); background: var(--gray-25); border: 1px solid var(--gray-200); border-radius: 4px; }
+
+  /* Shell */
+  .shell { display: grid; grid-template-columns: var(--nav-w) minmax(0, 1fr); min-height: calc(100vh - var(--topbar-h)); }
+  .sidenav { position: sticky; top: var(--topbar-h); align-self: start; height: calc(100vh - var(--topbar-h)); padding: 12px 8px; overflow: hidden; background: var(--gray-25); border-right: 1px solid var(--gray-100); }
+  .sidenav ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .sidenav a { display: flex; align-items: center; gap: 10px; height: 32px; padding: 0 12px; color: var(--gray-700); text-decoration: none; white-space: nowrap; border-radius: var(--radius); }
+  .sidenav a:hover { color: var(--gray-900); background: var(--gray-50); }
+  .sidenav a[aria-current="page"] { color: var(--accent); font-weight: 600; background: var(--accent-subtle); box-shadow: inset 3px 0 0 var(--accent); }
+
+  main { min-width: 0; padding: 24px 32px 64px; }
+  main:focus { outline: none; }
+  .page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .page-head h1 { font-size: 20px; line-height: 28px; font-weight: 600; }
+  .page-head h1:focus { outline: none; }
+  .page-head p { margin-top: 2px; color: var(--gray-600); }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 12px; font-weight: 500; white-space: nowrap; text-decoration: none; cursor: pointer; border: 1px solid transparent; border-radius: var(--radius); transition: background-color .12s, border-color .12s; }
+  .btn-primary { color: #fff; background: var(--accent); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-secondary { color: var(--gray-900); background: var(--gray-0); border-color: var(--gray-500); }
+  .btn-secondary:hover { background: var(--gray-50); }
+  .btn-danger { color: #fff; background: var(--danger); }
+  .btn-danger:hover { background: var(--danger-hover); }
+  .btn-ghost { padding: 0 8px; color: var(--accent); background: transparent; }
+  .btn-ghost:hover { background: var(--accent-subtle); }
+  .btn-icon { width: 32px; padding: 0; color: var(--gray-700); background: transparent; }
+  .btn-icon:hover { background: var(--gray-50); }
+  .btn:disabled, .btn[aria-disabled="true"] { color: var(--gray-600); background: var(--gray-50); border-color: var(--gray-200); cursor: not-allowed; }
+  .btn-icon[aria-disabled="true"] { background: transparent; border-color: transparent; color: var(--gray-200); }
+  .spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.45); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Toolbar and bulk bar share one row so the table does not jump */
+  .controls-row { min-height: 44px; margin-bottom: 12px; }
+  .toolbar { display: flex; align-items: center; gap: 12px; min-height: 44px; }
+  .search { position: relative; width: 300px; }
+  .search .icon { position: absolute; top: 8px; left: 10px; color: var(--gray-600); pointer-events: none; }
+  .input, .select { height: 32px; padding: 0 10px; background: var(--gray-0); border: 1px solid var(--gray-500); border-radius: var(--radius); }
+  .search .input { width: 100%; padding-left: 32px; }
+  .input:hover, .select:hover { border-color: var(--gray-700); }
+  .field-inline { display: flex; align-items: center; gap: 6px; }
+  .field-inline label { color: var(--gray-600); }
+  .result-count { margin-left: auto; color: var(--gray-600); white-space: nowrap; }
+  .segmented { display: inline-flex; border: 1px solid var(--gray-500); border-radius: var(--radius); overflow: hidden; }
+  .segmented button { height: 30px; padding: 0 10px; background: var(--gray-0); border: 0; cursor: pointer; }
+  .segmented button + button { border-left: 1px solid var(--gray-500); }
+  .segmented button:hover { background: var(--gray-50); }
+  .segmented button[aria-pressed="true"] { color: var(--accent); font-weight: 600; background: var(--accent-subtle); }
+  .segmented button:focus-visible { outline-offset: -3px; }
+
+  .bulkbar { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 5px 6px 5px 14px; background: var(--accent-subtle); border: 1px solid var(--accent-border); border-radius: var(--radius); }
+  .bulk-count { font-weight: 600; }
+  .bulk-note { color: var(--gray-700); }
+
+  /* Table */
+  .table-wrap { border: 1px solid var(--gray-100); border-radius: var(--radius); }
+  table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
+  thead th { position: sticky; top: var(--topbar-h); z-index: 5; height: 36px; padding: 0 12px; font-size: 13px; font-weight: 600; text-align: left; color: var(--gray-700); background: var(--gray-25); border-bottom: 1px solid var(--gray-200); }
+  thead th:first-child { border-top-left-radius: var(--radius); }
+  thead th:last-child { border-top-right-radius: var(--radius); }
+  tbody td, tbody th { height: var(--row-h); padding: 0 12px; font-weight: 400; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-bottom: 1px solid var(--gray-100); }
+  tbody tr:last-child > * { border-bottom: 0; }
+  tbody tr:hover { background: var(--gray-25); }
+  tbody tr.is-selected { background: var(--accent-subtle); }
+  .col-check { width: 44px; }
+  th.cell-check, td.cell-check { padding: 0; }
+  .col-name { width: 22%; }
+  .col-role { width: 8%; }
+  .col-status { width: 14%; }
+  .col-last { width: 14%; }
+  .col-added { width: 11%; }
+  .check { display: flex; align-items: center; justify-content: center; width: 100%; height: var(--row-h); cursor: pointer; }
+  thead .check { height: 36px; }
+  .check input { width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: var(--accent); }
+  .sort { display: inline-flex; align-items: center; gap: 4px; height: 28px; margin-left: -6px; padding: 0 6px; font-weight: 600; color: inherit; background: transparent; border: 0; border-radius: 4px; cursor: pointer; }
+  .sort:hover { background: var(--gray-100); }
+  .sort .icon { color: var(--gray-500); }
+  th[aria-sort] .sort .icon { color: var(--gray-900); }
+  .row-link { display: block; overflow: hidden; text-overflow: ellipsis; font-weight: 500; color: var(--gray-900); text-decoration: none; }
+  .row-link:hover { color: var(--accent); text-decoration: underline; }
+  tbody td.cell-message { height: auto; padding: 32px 16px; white-space: normal; }
+  .message h2 { font-size: 15px; font-weight: 600; }
+  .message p { margin-top: 4px; color: var(--gray-600); }
+  .message .btn { margin-top: 12px; }
+  .sk { display: block; height: 10px; background: var(--gray-100); border-radius: 3px; }
+
+  /* Status badges: color plus icon plus text */
+  .badge { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px 0 6px; font-size: 12px; font-weight: 500; border-radius: 4px; vertical-align: middle; }
+  .badge-active { color: var(--success-fg); background: var(--success-bg); }
+  .badge-invited { color: var(--warning-fg); background: var(--warning-bg); }
+  .badge-deactivated { color: var(--neutral-fg); background: var(--neutral-bg); }
+
+  .pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; color: var(--gray-600); }
+  .pager-controls { display: flex; align-items: center; gap: 8px; }
+
+  /* Page-level states */
+  .state-panel { max-width: 640px; padding: 32px; border: 1px solid var(--gray-100); border-radius: var(--radius); }
+  .state-icon { display: inline-flex; padding: 8px; margin-bottom: 12px; color: var(--gray-700); background: var(--gray-50); border-radius: var(--radius); }
+  .state-panel h2 { font-size: 16px; font-weight: 600; }
+  .state-panel p { margin-top: 4px; color: var(--gray-600); }
+  .state-panel .btn { margin-top: 16px; }
+  .banner { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border-radius: var(--radius); }
+  .banner-error { background: var(--danger-bg); border: 1px solid var(--danger-border); }
+  .banner-error > .icon { margin-top: 2px; color: var(--danger); }
+  .banner-text { flex: 1; }
+  .banner-title { font-size: 14px; font-weight: 600; }
+  .banner-text p { margin-top: 2px; color: var(--gray-700); }
+
+  /* Dialogs and drawer (the only places with shadows) */
+  dialog { padding: 0; color: inherit; background: var(--gray-0); border: 0; }
+  dialog::backdrop { background: rgba(20, 23, 28, .4); }
+  .modal { width: min(480px, calc(100vw - 32px)); border-radius: 8px; box-shadow: 0 12px 32px rgba(20,23,28,.22), 0 2px 6px rgba(20,23,28,.12); }
+  .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 12px 0 20px; }
+  .modal-head h2 { padding-top: 4px; font-size: 16px; line-height: 24px; font-weight: 600; overflow-wrap: anywhere; }
+  .modal-body { padding: 8px 20px 20px; }
+  .modal-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; background: var(--gray-25); border-top: 1px solid var(--gray-100); border-radius: 0 0 8px 8px; }
+  .name-list { margin: 12px 0 0; padding-left: 20px; }
+  .name-list li { overflow-wrap: anywhere; }
+  .confirm-extra { margin-top: 12px; }
+  .confirm-warn { display: flex; align-items: flex-start; gap: 6px; margin-top: 12px; color: var(--danger); }
+  .confirm-warn .icon { margin-top: 2px; }
+
+  .drawer { position: fixed; inset: 0 0 0 auto; width: 440px; max-width: 100vw; height: 100vh; max-height: 100vh; margin: 0 0 0 auto; border-left: 1px solid var(--gray-200); box-shadow: -8px 0 24px rgba(20,23,28,.16); }
+  .drawer[open] { display: flex; flex-direction: column; }
+  .drawer-head { display: flex; align-items: flex-start; gap: 12px; padding: 16px 12px 16px 24px; border-bottom: 1px solid var(--gray-100); }
+  .drawer-head > div { flex: 1; min-width: 0; }
+  .drawer-head h2 { font-size: 16px; line-height: 24px; font-weight: 600; overflow-wrap: anywhere; }
+  .drawer-head p { overflow-wrap: anywhere; }
+  .drawer-body { flex: 1; padding: 20px 24px; overflow: auto; }
+  .drawer-foot { display: flex; gap: 8px; padding: 12px 24px; border-top: 1px solid var(--gray-100); }
+  .dl { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 12px 16px; margin: 0; }
+  .dl dt { color: var(--gray-600); }
+  .dl dd { margin: 0; overflow-wrap: anywhere; }
+
+  .form-note { color: var(--gray-600); }
+  .form-field { display: grid; gap: 4px; margin-top: 16px; }
+  .form-field label { font-weight: 500; }
+  .form-field .input, .form-field .select { width: 100%; }
+  .help { font-size: 13px; color: var(--gray-600); }
+  .error-text { display: flex; align-items: flex-start; gap: 4px; font-size: 13px; color: var(--danger); }
+  .error-text .icon { margin-top: 2px; }
+  .input[aria-invalid="true"] { border-color: var(--danger); box-shadow: inset 0 0 0 1px var(--danger); }
+
+  /* Toast */
+  .toast-region { position: fixed; bottom: 24px; left: calc(var(--nav-w) + 32px); z-index: 30; }
+  .toast { display: flex; align-items: center; gap: 12px; max-width: 560px; padding: 6px 6px 6px 16px; color: #fff; background: var(--gray-900); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(20,23,28,.24); }
+  .toast p { flex: 1; overflow-wrap: anywhere; }
+  .toast .btn-ghost { color: #a9c6ff; }
+  .toast .btn-ghost:hover, .toast .btn-icon:hover { background: rgba(255,255,255,.12); }
+  .toast .btn-icon { color: #d1d5db; }
+  .toast :focus-visible { outline-color: #a9c6ff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="topbar">
+  <button type="button" class="btn btn-icon" id="navToggle" aria-controls="sidenav" aria-expanded="true" aria-label="Collapse navigation" title="Collapse navigation"><span data-icon="panel"></span></button>
+  <span class="product">Admin</span>
+  <span class="spacer"></span>
+  <span class="tag" title="Names, emails and dates on this page are generated for the demo and are not real people."><span data-icon="info" data-size="14"></span>Sample data</span>
+</header>
+
+<div class="shell">
+  <nav class="sidenav" id="sidenav" aria-label="Main">
+    <ul>
+      <li><a href="#dashboard"><span data-icon="home"></span><span class="nav-label">Dashboard</span></a></li>
+      <li><a href="#users" aria-current="page"><span data-icon="users"></span><span class="nav-label">Users</span></a></li>
+      <li><a href="#analytics"><span data-icon="chart"></span><span class="nav-label">Analytics</span></a></li>
+      <li><a href="#settings"><span data-icon="sliders"></span><span class="nav-label">Settings</span></a></li>
+    </ul>
+  </nav>
+
+  <main id="main" tabindex="-1">
+    <div class="page-head">
+      <div>
+        <h1 id="pageTitle" tabindex="-1">Users</h1>
+        <p>Manage who can sign in and what they can do.</p>
+      </div>
+      <button type="button" class="btn btn-primary" id="addBtn"><span data-icon="plus"></span>Add user</button>
+    </div>
+
+    <div id="stateView" hidden></div>
+
+    <div id="tableView">
+      <div class="controls-row">
+        <div class="toolbar" id="toolbar" role="search" aria-label="Find users">
+          <div class="search">
+            <label for="search" class="sr-only">Search users</label>
+            <span data-icon="search"></span>
+            <input type="search" id="search" class="input" placeholder="Search by name or email" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="field-inline">
+            <label for="roleFilter">Role</label>
+            <select id="roleFilter" class="select">
+              <option value="">All roles</option>
+              <option value="admin">Admin</option>
+              <option value="editor">Editor</option>
+              <option value="viewer">Viewer</option>
+            </select>
+          </div>
+          <div class="field-inline">
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter" class="select">
+              <option value="">All statuses</option>
+              <option value="active">Active</option>
+              <option value="invited">Invited</option>
+              <option value="deactivated">Deactivated</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-ghost" id="clearFilters" hidden>Clear filters</button>
+          <span class="result-count" id="resultCount"></span>
+          <div class="segmented" role="group" aria-label="Row density">
+            <button type="button" data-density="default" aria-pressed="true">Default</button>
+            <button type="button" data-density="compact" aria-pressed="false">Compact</button>
+          </div>
+        </div>
+
+        <div class="bulkbar" id="bulkbar" role="region" aria-label="Bulk actions" hidden>
+          <span class="bulk-count" id="bulkCount"></span>
+          <button type="button" class="btn btn-ghost" id="selectAll">Select all results</button>
+          <button type="button" class="btn btn-ghost" id="clearSelection">Clear selection</button>
+          <span class="spacer"></span>
+          <span class="bulk-note" id="bulkNote" hidden></span>
+          <button type="button" class="btn btn-danger" id="bulkDeactivate">Deactivate users</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="usersTable">
+          <caption class="sr-only" id="tableCaption">Users</caption>
+          <colgroup>
+            <col class="col-check"><col class="col-name"><col class="col-email"><col class="col-role"><col class="col-status"><col class="col-last"><col class="col-added">
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col" class="cell-check"><label class="check"><input type="checkbox" id="selectPage" aria-label="Select all users on this page"></label></th>
+              <th scope="col" data-col="name"><button type="button" class="sort" data-sort="name">Name<span class="sort-icon"></span></button></th>
+              <th scope="col" data-col="email"><button type="button" class="sort" data-sort="email">Email<span class="sort-icon"></span></button></th>
+              <th scope="col" data-col="role"><button type="button" class="sort" data-sort="role">Role<span class="sort-icon"></span></button></th>
+              <th scope="col" data-col="status"><button type="button" class="sort" data-sort="status">Status<span class="sort-icon"></span></button></th>
+              <th scope="col" data-col="lastActive"><button type="button" class="sort" data-sort="lastActive">Last active<span class="sort-icon"></span></button></th>
+              <th scope="col" data-col="created"><button type="button" class="sort" data-sort="created">Added<span class="sort-icon"></span></button></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="pager" id="pager">
+        <span id="pagerText"></span>
+        <div class="pager-controls">
+          <span id="pageOf"></span>
+          <button type="button" class="btn btn-secondary" id="prevPage"><span data-icon="chevLeft"></span>Previous</button>
+          <button type="button" class="btn btn-secondary" id="nextPage">Next<span data-icon="chevRight"></span></button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast-region" id="toastRegion" role="status" aria-live="polite"></div>
+<div class="sr-only" id="announcer" aria-live="polite"></div>
+
+<!-- User detail drawer -->
+<dialog class="drawer" id="drawer" aria-labelledby="drawerTitle"></dialog>
+
+<!-- Deactivation confirmation -->
+<dialog class="modal" id="confirmDialog" role="alertdialog" aria-labelledby="confirmTitle" aria-describedby="confirmDesc">
+  <div class="modal-head"><h2 id="confirmTitle"></h2></div>
+  <div class="modal-body">
+    <p id="confirmDesc"></p>
+    <ul class="name-list" id="confirmList"></ul>
+    <p class="muted confirm-extra" id="confirmExtra" hidden></p>
+    <p class="confirm-warn" id="confirmWarn" hidden></p>
+    <div class="form-field" id="confirmTypeField" hidden>
+      <label for="confirmType" id="confirmTypeLabel"></label>
+      <input id="confirmType" class="input" inputmode="numeric" autocomplete="off">
+    </div>
+  </div>
+  <div class="modal-foot">
+    <button type="button" class="btn btn-secondary" id="confirmCancel" autofocus>Cancel</button>
+    <button type="button" class="btn btn-danger" id="confirmOk">Deactivate</button>
+  </div>
+</dialog>
+
+<!-- Add user -->
+<dialog class="modal" id="addDialog" aria-labelledby="addTitle">
+  <form id="addForm" novalidate>
+    <div class="modal-head">
+      <h2 id="addTitle">Add user</h2>
+      <button type="button" class="btn btn-icon" data-close aria-label="Close" title="Close"><span data-icon="x"></span></button>
+    </div>
+    <div class="modal-body">
+      <p class="form-note">All fields are required. The new user gets an email invitation to set a password.</p>
+      <div class="form-field">
+        <label for="fName">Full name</label>
+        <input id="fName" class="input" autocomplete="off" aria-describedby="fNameErr" autofocus>
+        <p class="error-text" id="fNameErr" hidden></p>
+      </div>
+      <div class="form-field">
+        <label for="fEmail">Email</label>
+        <input id="fEmail" class="input" type="email" autocomplete="off" spellcheck="false" aria-describedby="fEmailHelp fEmailErr">
+        <p class="help" id="fEmailHelp">Use a work address. It becomes the user's sign-in name.</p>
+        <p class="error-text" id="fEmailErr" hidden></p>
+      </div>
+      <div class="form-field">
+        <label for="fRole">Role</label>
+        <select id="fRole" class="select" aria-describedby="fRoleHelp">
+          <option value="viewer">Viewer</option>
+          <option value="editor">Editor</option>
+          <option value="admin">Admin</option>
+        </select>
+        <p class="help" id="fRoleHelp">Viewers can see data. Editors can also change it. Admins can also manage users and settings.</p>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-secondary" data-close>Cancel</button>
+      <button type="submit" class="btn btn-primary" id="addSubmit">Add user</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Icons: one inline stroke set, 16 px, decorative only ---------- */
+  var PATHS = {
+    panel: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/>',
+    home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v12h5v-6h4v6h5V9"/>',
+    users: '<circle cx="9" cy="8" r="4"/><path d="M2 21c0-3.9 3.1-7 7-7s7 3.1 7 7"/><path d="M16 4.1a4 4 0 0 1 0 7.8"/><path d="M22 21c0-3-1.8-5.6-4.5-6.6"/>',
+    chart: '<path d="M3 20h18"/><path d="M6 20v-8"/><path d="M11 20V5"/><path d="M16 20v-6"/>',
+    sliders: '<path d="M4 6h9"/><path d="M19 6h1"/><circle cx="16" cy="6" r="2.5"/><path d="M4 12h3"/><path d="M13 12h7"/><circle cx="10" cy="12" r="2.5"/><path d="M4 18h11"/><circle cx="18" cy="18" r="2.5"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+    plus: '<path d="M12 5v14"/><path d="M5 12h14"/>',
+    x: '<path d="M6 6l12 12"/><path d="M18 6 6 18"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
+    alert: '<path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4"/><path d="M12 17h.01"/>',
+    lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+    refresh: '<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/>',
+    checkCircle: '<circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.5 2.5L16 9.5"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    slashCircle: '<circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/>',
+    chevLeft: '<path d="m15 6-6 6 6 6"/>',
+    chevRight: '<path d="m9 6 6 6-6 6"/>',
+    sortNone: '<path d="m8 9 4-4 4 4"/><path d="m8 15 4 4 4-4"/>',
+    sortAsc: '<path d="m8 14 4-4 4 4"/>',
+    sortDesc: '<path d="m8 10 4 4 4-4"/>'
+  };
+  function icon(name, size) {
+    size = size || 16;
+    return '<svg class="icon" width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + PATHS[name] + '</svg>';
+  }
+  document.querySelectorAll('[data-icon]').forEach(function (el) {
+    el.outerHTML = icon(el.getAttribute('data-icon'), Number(el.getAttribute('data-size')) || 16);
+  });
+
+  /* ---------- Helpers ---------- */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function plural(n, one, many) { return n === 1 ? one : (many || one + 's'); }
+  function norm(s) { return String(s).toLowerCase().replace(/ø/g, 'o').normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function cap(s) { return s.charAt(0).toLocaleUpperCase() + s.slice(1); }
+
+  var nf = new Intl.NumberFormat();
+  var collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+  var rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+  var fmtFull = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+  var fmtDate = new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+
+  function relative(t) {
+    var s = Math.round((t - Date.now()) / 1000);
+    if (Math.abs(s) < 60) return 'Just now';
+    var m = Math.round(s / 60); if (Math.abs(m) < 60) return cap(rtf.format(m, 'minute'));
+    var h = Math.round(s / 3600); if (Math.abs(h) < 24) return cap(rtf.format(h, 'hour'));
+    var d = Math.round(s / 86400); if (Math.abs(d) < 30) return cap(rtf.format(d, 'day'));
+    var mo = Math.round(d / 30.44); if (Math.abs(mo) < 12) return cap(rtf.format(mo, 'month'));
+    return cap(rtf.format(Math.round(d / 365.25), 'year'));
+  }
+
+  /* ---------- Sample data: 60 users from a fixed seed ---------- */
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  var rand = mulberry32(48151623);
+  function pick(arr) { return arr[Math.floor(rand() * arr.length)]; }
+  function between(a, b) { return a + rand() * (b - a); }
+
+  var MIN = 60000, HOUR = 3600000, DAY = 86400000;
+  var NOW = Date.now();
+  var ROLE_LABEL = { admin: 'Admin', editor: 'Editor', viewer: 'Viewer' };
+  var STATUS_LABEL = { active: 'Active', invited: 'Invited', deactivated: 'Deactivated' };
+  var STATUS_ICON = { active: 'checkCircle', invited: 'clock', deactivated: 'slashCircle' };
+  var ROLE_ORDER = { admin: 0, editor: 1, viewer: 2 };
+  var STATUS_ORDER = { active: 0, invited: 1, deactivated: 2 };
+  var ID_CHARS = 'ABCDEFGHJKMNPQRSTVWXYZ23456789';
+
+  function makeId() {
+    var s = 'usr_';
+    for (var i = 0; i < 8; i++) s += ID_CHARS[Math.floor(rand() * ID_CHARS.length)];
+    return s;
+  }
+
+  var FIRST = ['Amara', 'Bilal', 'Chen', 'Dagny', 'Eitan', 'Farah', 'Goran', 'Hana', 'Ifeoma', 'Joaquín', 'Kenji', 'Leilani', 'Mateus', 'Nadia', 'Oskar', 'Priya', 'Quentin', 'Rania', 'Søren', 'Tomasz', 'Uma', 'Viktor', 'Ximena', 'Yusuf', 'Zofia', 'Aiyana', 'Brenna', 'Cyrus', 'Delphine', 'Emeka', 'Freya', 'Gustavo', 'Hiroko', 'Ilse', 'Jamal', 'Kalani', 'Luca', 'Marisol', 'Niamh', 'Rafael'];
+  var LAST = ['Okafor', 'Haddad', 'Lindqvist', 'Nakamura', 'Petrović', 'Ramírez', 'Sørensen', 'Mensah', 'Kowalczyk', 'Bhattacharya', 'Fitzgerald', 'Ivanova', 'Delacroix', 'Takahashi', 'Abernathy', 'Mwangi', 'Castellanos', 'Nguyen', 'Kaur', 'Brennan', 'Varga', 'Osei', 'Lindgren', 'Moreau', 'Quispe', 'Demir', 'Rahman', 'Achterberg', 'Halvorsen', 'Suzuki'];
+
+  // Edge cases the table must hold up against.
+  var SPECIAL = [
+    { name: 'Maximiliane Oyelaran-Featherstonehaugh', role: 'editor', status: 'active', ago: 2 * HOUR + 14 * MIN, age: 412 * DAY },
+    { name: 'Bartholomew Achterberg-Castellanos de la Vega', role: 'viewer', status: 'invited', ago: null, age: 3 * DAY },
+    { name: 'Ingrid Haugen', role: 'admin', status: 'deactivated', ago: 96 * DAY + 5 * HOUR, age: 780 * DAY },
+    { name: 'Wen Li', role: 'admin', status: 'active', ago: 4 * MIN, age: 1020 * DAY },
+    { name: 'Oluwaseun Adeyemi-Bhattacharya', role: 'viewer', status: 'active', ago: 41 * DAY + 3 * HOUR, age: 230 * DAY, domain: 'contractors.example.net' },
+    { name: 'Teodora Kowalczyk', role: 'editor', status: 'invited', ago: null, age: 11 * DAY }
+  ];
+
+  function generateUsers() {
+    var list = [], names = {}, emails = {};
+    function add(spec) {
+      var parts = spec.name.split(' ');
+      var local = norm(parts[0] + '.' + parts.slice(1).join('')).replace(/[^a-z0-9.]+/g, '');
+      var domain = spec.domain || 'example.com';
+      var email = local + '@' + domain, n = 2;
+      while (emails[email]) { email = local + n + '@' + domain; n++; }
+      emails[email] = true; names[spec.name] = true;
+      list.push({
+        id: makeId(), name: spec.name, email: email, role: spec.role, status: spec.status,
+        lastActive: spec.ago == null ? null : NOW - spec.ago,
+        created: NOW - spec.age
+      });
+    }
+    SPECIAL.forEach(add);
+    while (list.length < 60) {
+      var name = pick(FIRST) + ' ' + pick(LAST);
+      if (names[name]) continue;
+      var r = rand(), role = r < 0.12 ? 'admin' : r < 0.45 ? 'editor' : 'viewer';
+      var s = rand(), status = s < 0.78 ? 'active' : s < 0.87 ? 'invited' : 'deactivated';
+      var age = status === 'invited' ? between(1, 20) * DAY : between(20, 900) * DAY;
+      var ago = null;
+      if (status === 'active') {
+        var b = rand();
+        ago = b < 0.2 ? between(1, 59) * MIN : b < 0.5 ? between(1, 23) * HOUR : b < 0.85 ? between(1, 29) * DAY : between(30, 200) * DAY;
+      } else if (status === 'deactivated') {
+        ago = between(30, 300) * DAY;
+      }
+      if (ago != null) ago = Math.min(ago, age - HOUR);
+      add({ name: name, role: role, status: status, ago: ago == null ? null : Math.round(ago), age: Math.round(age), domain: rand() < 0.1 ? 'contractors.example.net' : null });
+    }
+    return list;
+  }
+
+  /* ---------- State, read from the URL ---------- */
+  var PAGE_SIZE = 25;
+  var SORT_KEYS = ['name', 'email', 'role', 'status', 'lastActive', 'created'];
+  var SORT_LABEL = { name: 'Name', email: 'Email', role: 'Role', status: 'Status', lastActive: 'Last active', created: 'Added' };
+  function defaultDir(key) { return key === 'lastActive' || key === 'created' ? 'desc' : 'asc'; }
+
+  var qs = new URLSearchParams(location.search);
+  var demoState = ['empty', 'loading', 'error', 'noaccess'].indexOf(qs.get('state')) >= 0 ? qs.get('state') : '';
+  var sortKey = SORT_KEYS.indexOf(qs.get('sort')) >= 0 ? qs.get('sort') : 'name';
+  var ui = {
+    q: qs.get('q') || '',
+    role: ROLE_LABEL[qs.get('role')] ? qs.get('role') : '',
+    status: STATUS_LABEL[qs.get('status')] ? qs.get('status') : '',
+    sort: sortKey,
+    dir: qs.get('dir') === 'asc' || qs.get('dir') === 'desc' ? qs.get('dir') : defaultDir(sortKey),
+    page: Math.max(1, parseInt(qs.get('page'), 10) || 1),
+    density: qs.get('density') === 'compact' ? 'compact' : 'default'
+  };
+  var openUserId = qs.get('user') || '';
+  var mode = demoState === 'loading' || demoState === 'error' || demoState === 'noaccess' ? demoState : 'ready';
+  var users = demoState === 'empty' ? [] : generateUsers();
+  var selected = new Set();
+  var current = { list: [], rows: [] };
+
+  function buildParams(extra) {
+    var p = new URLSearchParams();
+    if (demoState) p.set('state', demoState);
+    if (ui.q) p.set('q', ui.q);
+    if (ui.role) p.set('role', ui.role);
+    if (ui.status) p.set('status', ui.status);
+    if (ui.sort !== 'name' || ui.dir !== 'asc') { p.set('sort', ui.sort); p.set('dir', ui.dir); }
+    if (ui.page > 1) p.set('page', String(ui.page));
+    if (ui.density === 'compact') p.set('density', 'compact');
+    var user = extra && extra.user !== undefined ? extra.user : openUserId;
+    if (user) p.set('user', user);
+    return p;
+  }
+  function writeURL() {
+    var s = buildParams().toString();
+    try { history.replaceState(null, '', s ? '?' + s : location.pathname); } catch (e) { /* file:// in some browsers */ }
+  }
+
+  /* ---------- Elements ---------- */
+  var els = {
+    addBtn: $('addBtn'), stateView: $('stateView'), tableView: $('tableView'), toolbar: $('toolbar'),
+    search: $('search'), roleFilter: $('roleFilter'), statusFilter: $('statusFilter'), clearFilters: $('clearFilters'),
+    resultCount: $('resultCount'), bulkbar: $('bulkbar'), bulkCount: $('bulkCount'), selectAll: $('selectAll'),
+    clearSelection: $('clearSelection'), bulkNote: $('bulkNote'), bulkDeactivate: $('bulkDeactivate'),
+    table: $('usersTable'), caption: $('tableCaption'), tbody: $('tbody'), selectPage: $('selectPage'),
+    pager: $('pager'), pagerText: $('pagerText'), pageOf: $('pageOf'), prevPage: $('prevPage'), nextPage: $('nextPage'),
+    toastRegion: $('toastRegion'), announcer: $('announcer'), pageTitle: $('pageTitle'),
+    drawer: $('drawer'), confirmDialog: $('confirmDialog'), confirmTitle: $('confirmTitle'), confirmDesc: $('confirmDesc'),
+    confirmList: $('confirmList'), confirmExtra: $('confirmExtra'), confirmOk: $('confirmOk'), confirmCancel: $('confirmCancel'),
+    addDialog: $('addDialog'), addForm: $('addForm'), fName: $('fName'), fEmail: $('fEmail'), fRole: $('fRole'),
+    fNameErr: $('fNameErr'), fEmailErr: $('fEmailErr'), addSubmit: $('addSubmit'), navToggle: $('navToggle')
+  };
+
+  function byId(id) { for (var i = 0; i < users.length; i++) if (users[i].id === id) return users[i]; return null; }
+  function filtersActive() { return !!(ui.q.trim() || ui.role || ui.status); }
+
+  function getFiltered() {
+    var q = norm(ui.q.trim());
+    return users.filter(function (u) {
+      if (ui.role && u.role !== ui.role) return false;
+      if (ui.status && u.status !== ui.status) return false;
+      if (q && norm(u.name + ' ' + u.email).indexOf(q) < 0) return false;
+      return true;
+    });
+  }
+  function sortList(list) {
+    var k = ui.sort, sign = ui.dir === 'asc' ? 1 : -1;
+    return list.slice().sort(function (a, b) {
+      var r = 0;
+      if (k === 'name' || k === 'email') r = collator.compare(a[k], b[k]);
+      else if (k === 'role') r = ROLE_ORDER[a.role] - ROLE_ORDER[b.role];
+      else if (k === 'status') r = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
+      else {
+        // Users who never signed in always sort last.
+        if (a[k] == null && b[k] == null) r = 0;
+        else if (a[k] == null) return 1;
+        else if (b[k] == null) return -1;
+        else r = a[k] - b[k];
+      }
+      return r * sign || collator.compare(a.name, b.name);
+    });
+  }
+
+  /* ---------- Rendering ---------- */
+  function badge(status) {
+    return '<span class="badge badge-' + status + '">' + icon(STATUS_ICON[status], 14) + STATUS_LABEL[status] + '</span>';
+  }
+  function lastActiveHTML(u) {
+    if (u.lastActive == null) return '<span class="muted">Never signed in</span>';
+    var d = new Date(u.lastActive);
+    return '<time datetime="' + d.toISOString() + '" title="' + esc(fmtFull.format(d)) + '">' + esc(relative(u.lastActive)) + '</time>';
+  }
+  function rowHTML(u) {
+    var sel = selected.has(u.id);
+    var created = new Date(u.created);
+    return '<tr data-id="' + u.id + '"' + (sel ? ' class="is-selected"' : '') + '>' +
+      '<td class="cell-check"><label class="check"><input type="checkbox" data-id="' + u.id + '"' + (sel ? ' checked' : '') + ' aria-label="Select ' + esc(u.name) + '"></label></td>' +
+      '<th scope="row"><a class="row-link" href="?' + esc(buildParams({ user: u.id }).toString()) + '" data-open="' + u.id + '" title="' + esc(u.name) + '">' + esc(u.name) + '</a></th>' +
+      '<td title="' + esc(u.email) + '">' + esc(u.email) + '</td>' +
+      '<td>' + ROLE_LABEL[u.role] + '</td>' +
+      '<td>' + badge(u.status) + '</td>' +
+      '<td>' + lastActiveHTML(u) + '</td>' +
+      '<td><time datetime="' + created.toISOString() + '" title="' + esc(fmtFull.format(created)) + '">' + esc(fmtDate.format(created)) + '</time></td>' +
+      '</tr>';
+  }
+  function skeletonRows(n) {
+    var widths = [[70, 82, 40, 56, 60, 64], [55, 74, 46, 56, 52, 64], [78, 66, 40, 70, 66, 64], [62, 88, 46, 56, 48, 64]];
+    var html = '';
+    for (var i = 0; i < n; i++) {
+      var w = widths[i % widths.length];
+      html += '<tr aria-hidden="true"><td class="cell-check"><span class="sk" style="width:16px;height:16px;margin:auto"></span></td>' +
+        w.map(function (x) { return '<td><span class="sk" style="width:' + x + '%"></span></td>'; }).join('') + '</tr>';
+    }
+    return html;
+  }
+  function noResultsHTML() {
+    var q = ui.q.trim();
+    var what = q ? 'No users match “' + esc(q) + '”' + (ui.role || ui.status ? ' with the current filters.' : '.') : 'No users match the current filters.';
+    return '<tr><td colspan="7" class="cell-message"><div class="message">' +
+      '<h2>' + what + '</h2>' +
+      '<p>Check the spelling, search by email instead, or clear the filters to see all ' + nf.format(users.length) + ' users.</p>' +
+      '<button type="button" class="btn btn-secondary" data-action="clear-filters">Clear search and filters</button>' +
+      '</div></td></tr>';
+  }
+
+  function showState(html) {
+    els.tableView.hidden = true;
+    els.stateView.hidden = false;
+    els.stateView.innerHTML = html;
+    els.bulkbar.hidden = true;
+  }
+
+  function render() {
+    document.body.classList.toggle('density-compact', ui.density === 'compact');
+    var isEmpty = mode === 'ready' && users.length === 0;
+    els.addBtn.hidden = !(mode === 'ready' && !isEmpty);
+
+    if (mode === 'noaccess') {
+      return showState('<div class="state-panel"><span class="state-icon">' + icon('lock', 20) + '</span>' +
+        '<h2>You do not have access to users</h2>' +
+        '<p>Only admins can view and manage users. Your role is Viewer. If you need access, ask an admin in your organization to change your role.</p></div>');
+    }
+    if (mode === 'error') {
+      return showState('<div class="banner banner-error" role="alert">' + icon('alert', 16) +
+        '<div class="banner-text"><h2 class="banner-title">Users could not be loaded</h2>' +
+        '<p>The server did not respond in time, so the list is not shown. Try again. If it keeps failing, contact support and quote reference 7F3A-21C9.</p></div>' +
+        '<button type="button" class="btn btn-secondary" data-action="retry">' + icon('refresh', 16) + 'Retry</button></div>');
+    }
+    if (isEmpty) {
+      return showState('<div class="state-panel"><span class="state-icon">' + icon('users', 20) + '</span>' +
+        '<h2>No users yet</h2>' +
+        '<p>Add people so they can sign in. Each new user gets an email invitation and starts with the role you choose.</p>' +
+        '<button type="button" class="btn btn-primary" data-action="add">' + icon('plus', 16) + 'Add user</button></div>');
+    }
+
+    els.stateView.hidden = true;
+    els.stateView.innerHTML = '';
+    els.tableView.hidden = false;
+    els.clearFilters.hidden = !filtersActive();
+    document.querySelectorAll('[data-density]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-density') === ui.density));
+    });
+    renderSortHeaders();
+    renderTable();
+    renderSelection();
+  }
+
+  function renderSortHeaders() {
+    document.querySelectorAll('thead th[data-col]').forEach(function (th) {
+      var key = th.getAttribute('data-col');
+      var active = key === ui.sort;
+      if (active) th.setAttribute('aria-sort', ui.dir === 'asc' ? 'ascending' : 'descending');
+      else th.removeAttribute('aria-sort');
+      th.querySelector('.sort-icon, .icon').outerHTML = icon(active ? (ui.dir === 'asc' ? 'sortAsc' : 'sortDesc') : 'sortNone', 14).replace('class="icon"', 'class="icon sort-icon"');
+    });
+  }
+
+  function renderTable() {
+    var loading = mode === 'loading';
+    els.table.setAttribute('aria-busy', String(loading));
+    if (loading) {
+      els.caption.textContent = 'Users, loading';
+      els.tbody.innerHTML = skeletonRows(10);
+      els.selectPage.disabled = true;
+      els.selectPage.checked = false;
+      els.selectPage.indeterminate = false;
+      els.resultCount.textContent = 'Loading users';
+      els.pager.hidden = true;
+      current = { list: [], rows: [] };
+      return;
+    }
+
+    var list = sortList(getFiltered());
+    var total = list.length;
+    var pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (ui.page > pages) { ui.page = pages; writeURL(); }
+    var start = (ui.page - 1) * PAGE_SIZE;
+    var rows = list.slice(start, start + PAGE_SIZE);
+    current = { list: list, rows: rows };
+
+    var dirText = ui.sort === 'lastActive' || ui.sort === 'created'
+      ? (ui.dir === 'desc' ? 'newest first' : 'oldest first')
+      : (ui.dir === 'asc' ? 'ascending' : 'descending');
+    els.caption.textContent = 'Users, sorted by ' + SORT_LABEL[ui.sort] + ', ' + dirText;
+    els.resultCount.textContent = filtersActive()
+      ? nf.format(total) + ' of ' + nf.format(users.length) + ' users'
+      : nf.format(total) + ' ' + plural(total, 'user');
+
+    if (total === 0) {
+      els.tbody.innerHTML = noResultsHTML();
+      els.selectPage.disabled = true;
+      els.selectPage.checked = false;
+      els.selectPage.indeterminate = false;
+      els.pager.hidden = true;
+      return;
+    }
+
+    els.tbody.innerHTML = rows.map(rowHTML).join('');
+    els.selectPage.disabled = false;
+    els.pager.hidden = false;
+    els.pagerText.textContent = 'Showing ' + nf.format(start + 1) + ' to ' + nf.format(start + rows.length) + ' of ' + nf.format(total);
+    var showNav = pages > 1;
+    els.pageOf.hidden = els.prevPage.hidden = els.nextPage.hidden = !showNav;
+    els.pageOf.textContent = 'Page ' + nf.format(ui.page) + ' of ' + nf.format(pages);
+    els.prevPage.setAttribute('aria-disabled', String(ui.page <= 1));
+    els.nextPage.setAttribute('aria-disabled', String(ui.page >= pages));
+  }
+
+  // Updates checkboxes, the header checkbox and the bulk bar without rebuilding rows, so focus stays put.
+  function renderSelection() {
+    if (mode !== 'ready') { els.bulkbar.hidden = true; els.toolbar.hidden = false; return; }
+    els.tbody.querySelectorAll('tr[data-id]').forEach(function (tr) {
+      var on = selected.has(tr.getAttribute('data-id'));
+      tr.classList.toggle('is-selected', on);
+      tr.querySelector('input[type="checkbox"]').checked = on;
+    });
+    var rows = current.rows, total = current.list.length;
+    var onPage = rows.filter(function (u) { return selected.has(u.id); }).length;
+    els.selectPage.checked = rows.length > 0 && onPage === rows.length;
+    els.selectPage.indeterminate = onPage > 0 && onPage < rows.length;
+
+    var n = selected.size;
+    els.bulkbar.hidden = n === 0;
+    els.toolbar.hidden = n > 0;
+    if (n === 0) return;
+
+    var targets = users.filter(function (u) { return selected.has(u.id) && u.status !== 'deactivated'; }).length;
+    var skipped = n - targets;
+    var pageAll = rows.length > 0 && onPage === rows.length;
+    if (n === total && total > rows.length) els.bulkCount.textContent = 'All ' + nf.format(total) + ' results are selected.';
+    else if (pageAll && n === rows.length && total > rows.length) els.bulkCount.textContent = 'All ' + nf.format(n) + ' users on this page are selected.';
+    else els.bulkCount.textContent = nf.format(n) + ' ' + plural(n, 'user') + ' selected';
+
+    els.selectAll.hidden = !(pageAll && n < total);
+    els.selectAll.textContent = 'Select all ' + nf.format(total) + ' results';
+
+    if (targets === 0) {
+      els.bulkNote.hidden = false;
+      els.bulkNote.textContent = n === 1 ? 'This user is already deactivated.' : 'All selected users are already deactivated.';
+      els.bulkDeactivate.disabled = true;
+      els.bulkDeactivate.textContent = 'Deactivate users';
+      els.bulkDeactivate.setAttribute('aria-describedby', 'bulkNote');
+    } else {
+      els.bulkNote.hidden = skipped === 0;
+      els.bulkNote.textContent = skipped ? nf.format(skipped) + ' already deactivated, skipped.' : '';
+      els.bulkDeactivate.disabled = false;
+      els.bulkDeactivate.textContent = 'Deactivate ' + nf.format(targets) + ' ' + plural(targets, 'user');
+      if (skipped) els.bulkDeactivate.setAttribute('aria-describedby', 'bulkNote');
+      else els.bulkDeactivate.removeAttribute('aria-describedby');
+    }
+  }
+
+  var announceTimer;
+  function announce(text, delay) {
+    clearTimeout(announceTimer);
+    announceTimer = setTimeout(function () { els.announcer.textContent = text; }, delay || 0);
+  }
+  function announceCount() {
+    var total = current.list.length;
+    announce(total === 0 ? 'No users match' : nf.format(total) + ' ' + plural(total, 'user') + ' found', 500);
+  }
+
+  /* ---------- Focus helpers ---------- */
+  function visible(el) { return el && el.isConnected && el.getClientRects().length > 0; }
+  function focusFirst() {
+    for (var i = 0; i < arguments.length; i++) {
+      var el = arguments[i];
+      if (visible(el) && !el.disabled) { el.focus(); return; }
+    }
+    els.pageTitle.focus();
+  }
+  function restoreFocus(el) {
+    if (el && !el.isConnected && el.getAttribute && el.getAttribute('data-open')) {
+      el = document.querySelector('[data-open="' + el.getAttribute('data-open') + '"]');
+    }
+    focusFirst(el, els.selectPage, els.search);
+  }
+
+  /* ---------- Toast ---------- */
+  function showToast(message, undo) {
+    els.toastRegion.innerHTML = '';
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = '<p>' + esc(message) + '</p>' +
+      (undo ? '<button type="button" class="btn btn-ghost" data-toast="undo">Undo</button>' : '') +
+      '<button type="button" class="btn btn-icon" data-toast="close" aria-label="Dismiss message" title="Dismiss">' + icon('x', 16) + '</button>';
+    t.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-toast]');
+      if (!b) return;
+      if (b.getAttribute('data-toast') === 'undo') {
+        undo();
+        var c = els.toastRegion.querySelector('[data-toast="close"]');
+        if (c) c.focus();
+      } else {
+        t.remove();
+        if (document.activeElement === document.body) els.pageTitle.focus();
+      }
+    });
+    els.toastRegion.appendChild(t);
+  }
+
+  /* ---------- Deactivation ---------- */
+  var pendingConfirm = null;
+  function openConfirm(ids, returnEl, after) {
+    var targets = users.filter(function (u) { return ids.indexOf(u.id) >= 0 && u.status !== 'deactivated'; });
+    var skipped = ids.length - targets.length;
+    var n = targets.length;
+    if (!n) return;
+    targets.sort(function (a, b) { return collator.compare(a.name, b.name); });
+    els.confirmTitle.textContent = n === 1 ? 'Deactivate ' + targets[0].name + '?' : 'Deactivate ' + nf.format(n) + ' users?';
+    els.confirmDesc.textContent = n === 1
+      ? 'This user loses access right away and is signed out of all sessions. Their data and history are kept, and you can reactivate them later.'
+      : 'These users lose access right away and are signed out of all sessions. Their data and history are kept, and you can reactivate them later.';
+    var shown = n === 1 ? [] : targets.slice(0, 5);
+    els.confirmList.hidden = shown.length === 0;
+    els.confirmList.innerHTML = shown.map(function (u) { return '<li>' + esc(u.name) + '</li>'; }).join('') +
+      (n > 5 ? '<li>and ' + nf.format(n - 5) + ' more</li>' : '');
+    els.confirmExtra.hidden = skipped === 0;
+    els.confirmExtra.textContent = skipped ? nf.format(skipped) + ' selected ' + plural(skipped, 'user is', 'users are') + ' already deactivated and will not change.' : '';
+    els.confirmOk.textContent = 'Deactivate ' + nf.format(n) + ' ' + plural(n, 'user');
+
+    // Lockout guard: warn when no active admin would remain.
+    var adminsLeft = users.filter(function (u) { return u.role === 'admin' && u.status === 'active' && targets.indexOf(u) < 0; }).length;
+    var hitsAdmins = targets.some(function (u) { return u.role === 'admin'; });
+    var warn = hitsAdmins && adminsLeft === 0;
+    els.confirmWarn.hidden = !warn;
+    els.confirmWarn.innerHTML = warn ? icon('alert', 16) + '<span>This includes every active admin. After this, nobody can sign in to manage users until an admin is reactivated.</span>' : '';
+
+    // High-impact: 10 or more users must be confirmed by typing the count.
+    confirmNeeded = n >= 10 ? String(n) : '';
+    els.confirmTypeField.hidden = !confirmNeeded;
+    els.confirmType.value = '';
+    $('confirmTypeLabel').textContent = 'To confirm, type the number of users to deactivate: ' + n;
+    els.confirmOk.disabled = !!confirmNeeded;
+    if (confirmNeeded) els.confirmOk.setAttribute('aria-describedby', 'confirmTypeLabel');
+    else els.confirmOk.removeAttribute('aria-describedby');
+
+    pendingConfirm = function () { deactivate(targets); if (after) after(); };
+    els.confirmDialog._return = returnEl;
+    els.confirmDialog.showModal();
+    if (confirmNeeded) els.confirmType.focus();
+  }
+  var confirmNeeded = '';
+  els.confirmType = $('confirmType');
+  els.confirmTypeField = $('confirmTypeField');
+  els.confirmWarn = $('confirmWarn');
+  els.confirmType.addEventListener('input', function () {
+    els.confirmOk.disabled = els.confirmType.value.trim() !== confirmNeeded;
+  });
+  els.confirmType.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !els.confirmOk.disabled) els.confirmOk.click();
+  });
+  els.confirmOk.addEventListener('click', function () {
+    if (els.confirmOk.disabled) return;
+    var fn = pendingConfirm;
+    pendingConfirm = null;
+    els.confirmDialog._skipRestore = true;
+    els.confirmDialog.close();
+    if (fn) fn();
+  });
+  els.confirmCancel.addEventListener('click', function () { els.confirmDialog.close(); });
+  els.confirmDialog.addEventListener('close', function () {
+    pendingConfirm = null;
+    if (els.confirmDialog._skipRestore) { els.confirmDialog._skipRestore = false; return; }
+    restoreFocus(els.confirmDialog._return);
+  });
+
+  function deactivate(targets) {
+    var changed = targets.map(function (u) { var prev = u.status; u.status = 'deactivated'; return { u: u, prev: prev }; });
+    selected.clear();
+    render();
+    refreshDrawer();
+    var n = changed.length;
+    showToast(n === 1 ? 'Deactivated ' + changed[0].u.name + '.' : 'Deactivated ' + nf.format(n) + ' users.', function () {
+      changed.forEach(function (c) { c.u.status = c.prev; });
+      render();
+      refreshDrawer();
+      showToast(n === 1 ? 'Reactivated ' + changed[0].u.name + '.' : 'Reactivated ' + nf.format(n) + ' users.');
+    });
+  }
+
+  /* ---------- Detail drawer ---------- */
+  function renderDrawer(u) {
+    var last = u.lastActive == null ? 'Never signed in' : esc(fmtFull.format(new Date(u.lastActive))) + ' <span class="muted">(' + esc(relative(u.lastActive)) + ')</span>';
+    var action = u.status === 'deactivated'
+      ? '<button type="button" class="btn btn-secondary drawer-action" data-action="reactivate">Reactivate user</button>'
+      : '<button type="button" class="btn btn-secondary drawer-action" data-action="deactivate-one">Deactivate user</button>';
+    els.drawer.innerHTML =
+      '<div class="drawer-head"><div><h2 id="drawerTitle">' + esc(u.name) + '</h2><p class="muted">' + esc(u.email) + '</p></div>' +
+      '<button type="button" class="btn btn-icon" data-action="close-drawer" aria-label="Close user details" title="Close">' + icon('x', 16) + '</button></div>' +
+      '<div class="drawer-body"><dl class="dl">' +
+      '<dt>Status</dt><dd>' + badge(u.status) + '</dd>' +
+      '<dt>Role</dt><dd>' + ROLE_LABEL[u.role] + '</dd>' +
+      '<dt>Last active</dt><dd>' + last + '</dd>' +
+      '<dt>Added</dt><dd>' + esc(fmtFull.format(new Date(u.created))) + '</dd>' +
+      '<dt>User ID</dt><dd class="mono">' + u.id + '</dd>' +
+      '</dl></div>' +
+      '<div class="drawer-foot">' + action + '</div>';
+  }
+  function openDrawer(id, returnEl) {
+    var u = byId(id);
+    if (!u) return;
+    openUserId = id;
+    writeURL();
+    renderDrawer(u);
+    els.drawer._return = returnEl || document.querySelector('[data-open="' + id + '"]') || els.pageTitle;
+    if (!els.drawer.open) els.drawer.showModal();
+  }
+  function refreshDrawer() {
+    if (!els.drawer.open) return;
+    var u = byId(openUserId);
+    if (!u) { els.drawer.close(); return; }
+    var hadFocus = els.drawer.contains(document.activeElement);
+    renderDrawer(u);
+    if (hadFocus || document.activeElement === document.body) {
+      var a = els.drawer.querySelector('.drawer-action');
+      if (a) a.focus();
+    }
+  }
+  els.drawer.addEventListener('close', function () {
+    openUserId = '';
+    writeURL();
+    restoreFocus(els.drawer._return);
+  });
+  els.drawer.addEventListener('click', function (e) {
+    if (e.target === els.drawer) { els.drawer.close(); return; } // backdrop
+    var b = e.target.closest('[data-action]');
+    if (!b) return;
+    var u = byId(openUserId);
+    var act = b.getAttribute('data-action');
+    if (act === 'close-drawer') els.drawer.close();
+    else if (act === 'deactivate-one' && u) {
+      openConfirm([u.id], b, function () {
+        var a = els.drawer.querySelector('.drawer-action');
+        if (a) a.focus();
+      });
+    } else if (act === 'reactivate' && u) {
+      u.status = u.lastActive == null ? 'invited' : 'active';
+      render();
+      refreshDrawer();
+      showToast('Reactivated ' + u.name + '.');
+    }
+  });
+
+  /* ---------- Add user ---------- */
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function checkName() { return els.fName.value.trim() ? '' : 'Enter the user’s full name.'; }
+  function checkEmail() {
+    var v = els.fEmail.value.trim();
+    if (!v) return 'Enter an email address.';
+    if (!EMAIL_RE.test(v)) return 'Enter an email address in the format name@company.com.';
+    var lower = v.toLowerCase();
+    if (users.some(function (u) { return u.email.toLowerCase() === lower; })) return 'A user with this email already exists. Search for them in the list instead.';
+    return '';
+  }
+  function setError(input, errEl, msg) {
+    errEl.hidden = !msg;
+    errEl.innerHTML = msg ? icon('alert', 14) + '<span>' + esc(msg) + '</span>' : '';
+    if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+  }
+  var addSubmitting = false;
+  function openAdd(trigger) {
+    els.addForm.reset();
+    setError(els.fName, els.fNameErr, '');
+    setError(els.fEmail, els.fEmailErr, '');
+    els.addDialog._return = trigger;
+    els.addDialog.showModal();
+  }
+  els.fName.addEventListener('blur', function () { if (els.addDialog.open && !addSubmitting) setError(els.fName, els.fNameErr, checkName()); });
+  els.fEmail.addEventListener('blur', function () { if (els.addDialog.open && !addSubmitting && els.fEmail.value.trim()) setError(els.fEmail, els.fEmailErr, checkEmail()); });
+  els.fName.addEventListener('input', function () { if (els.fName.hasAttribute('aria-invalid')) setError(els.fName, els.fNameErr, checkName()); });
+  els.fEmail.addEventListener('input', function () { if (els.fEmail.hasAttribute('aria-invalid')) setError(els.fEmail, els.fEmailErr, checkEmail()); });
+  els.addDialog.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) els.addDialog.close(); });
+  els.addDialog.addEventListener('cancel', function (e) { if (addSubmitting) e.preventDefault(); });
+  els.addDialog.addEventListener('close', function () { restoreFocus(els.addDialog._return); if (!visible(els.addDialog._return)) focusFirst(els.addBtn); });
+  els.addForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (addSubmitting) return;
+    var nameErr = checkName(), emailErr = checkEmail();
+    setError(els.fName, els.fNameErr, nameErr);
+    setError(els.fEmail, els.fEmailErr, emailErr);
+    if (nameErr) { els.fName.focus(); return; }
+    if (emailErr) { els.fEmail.focus(); return; }
+    addSubmitting = true;
+    els.addSubmit.disabled = true;
+    els.addSubmit.innerHTML = '<span class="spinner" aria-hidden="true"></span>Adding user';
+    setTimeout(function () {
+      var u = {
+        id: makeId(), name: els.fName.value.trim().replace(/\s+/g, ' '), email: els.fEmail.value.trim().toLowerCase(),
+        role: els.fRole.value, status: 'invited', lastActive: null, created: Date.now()
+      };
+      users.push(u);
+      addSubmitting = false;
+      els.addSubmit.disabled = false;
+      els.addSubmit.textContent = 'Add user';
+      els.addDialog.close();
+      render();
+      var hidden = getFiltered().indexOf(u) < 0;
+      showToast('Added ' + u.name + ' and sent an invitation to ' + u.email + '.' + (hidden ? ' The current filters hide this user.' : ''), function () {
+        users = users.filter(function (x) { return x !== u; });
+        selected.delete(u.id);
+        render();
+        showToast('Removed ' + u.name + '. No invitation was sent.');
+      });
+    }, 600);
+  });
+
+  /* ---------- Events ---------- */
+  function onFilterChange() {
+    ui.page = 1;
+    selected.clear();
+    render();
+    writeURL();
+    announceCount();
+  }
+  els.search.addEventListener('input', function () { ui.q = els.search.value; onFilterChange(); });
+  els.roleFilter.addEventListener('change', function () { ui.role = els.roleFilter.value; onFilterChange(); });
+  els.statusFilter.addEventListener('change', function () { ui.status = els.statusFilter.value; onFilterChange(); });
+  function clearFilters() {
+    ui.q = ''; ui.role = ''; ui.status = '';
+    els.search.value = ''; els.roleFilter.value = ''; els.statusFilter.value = '';
+    onFilterChange();
+    els.search.focus();
+  }
+  els.clearFilters.addEventListener('click', clearFilters);
+
+  document.querySelectorAll('[data-density]').forEach(function (b) {
+    b.addEventListener('click', function () { ui.density = b.getAttribute('data-density'); render(); writeURL(); });
+  });
+
+  document.querySelector('thead').addEventListener('click', function (e) {
+    var b = e.target.closest('.sort');
+    if (!b || mode !== 'ready') return;
+    var key = b.getAttribute('data-sort');
+    if (ui.sort === key) ui.dir = ui.dir === 'asc' ? 'desc' : 'asc';
+    else { ui.sort = key; ui.dir = defaultDir(key); }
+    ui.page = 1;
+    render();
+    writeURL();
+  });
+
+  els.selectPage.addEventListener('change', function () {
+    var on = els.selectPage.checked;
+    current.rows.forEach(function (u) { if (on) selected.add(u.id); else selected.delete(u.id); });
+    renderSelection();
+  });
+  els.tbody.addEventListener('change', function (e) {
+    var cb = e.target.closest('input[type="checkbox"][data-id]');
+    if (!cb) return;
+    if (cb.checked) selected.add(cb.getAttribute('data-id')); else selected.delete(cb.getAttribute('data-id'));
+    renderSelection();
+  });
+  els.tbody.addEventListener('click', function (e) {
+    var a = e.target.closest('a[data-open]');
+    if (a && !e.ctrlKey && !e.metaKey && !e.shiftKey && e.button === 0) {
+      e.preventDefault();
+      openDrawer(a.getAttribute('data-open'), a);
+      return;
+    }
+    if (e.target.closest('[data-action="clear-filters"]')) clearFilters();
+  });
+  els.selectAll.addEventListener('click', function () {
+    current.list.forEach(function (u) { selected.add(u.id); });
+    renderSelection();
+    els.clearSelection.focus();
+  });
+  els.clearSelection.addEventListener('click', function () {
+    selected.clear();
+    renderSelection();
+    els.selectPage.focus();
+  });
+  els.bulkDeactivate.addEventListener('click', function () {
+    openConfirm(Array.from(selected), els.bulkDeactivate, function () { focusFirst(els.selectPage, els.search); });
+  });
+
+  function goPage(delta, btn) {
+    if (btn.getAttribute('aria-disabled') === 'true') return;
+    ui.page += delta;
+    render();
+    writeURL();
+    announce('Page ' + ui.page);
+  }
+  els.prevPage.addEventListener('click', function () { goPage(-1, els.prevPage); });
+  els.nextPage.addEventListener('click', function () { goPage(1, els.nextPage); });
+
+  els.addBtn.addEventListener('click', function () { openAdd(els.addBtn); });
+  els.stateView.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-action]');
+    if (!b) return;
+    var act = b.getAttribute('data-action');
+    if (act === 'add') openAdd(b);
+    if (act === 'retry') {
+      demoState = '';
+      mode = 'loading';
+      writeURL();
+      render();
+      els.pageTitle.focus();
+      announce('Loading users');
+      setTimeout(function () {
+        mode = 'ready';
+        render();
+        announce('Users loaded. ' + nf.format(current.list.length) + ' users.');
+      }, 900);
+    }
+  });
+
+  els.navToggle.addEventListener('click', function () {
+    var collapsed = document.body.classList.toggle('nav-collapsed');
+    var label = collapsed ? 'Expand navigation' : 'Collapse navigation';
+    els.navToggle.setAttribute('aria-expanded', String(!collapsed));
+    els.navToggle.setAttribute('aria-label', label);
+    els.navToggle.title = label;
+    document.querySelectorAll('.sidenav a').forEach(function (a) {
+      if (collapsed) a.title = a.textContent.trim(); else a.removeAttribute('title');
+    });
+  });
+
+  /* ---------- Start ---------- */
+  els.search.value = ui.q;
+  els.roleFilter.value = ui.role;
+  els.statusFilter.value = ui.status;
+  render();
+  if (openUserId && mode === 'ready' && byId(openUserId)) openDrawer(openUserId, null);
+  else if (openUserId) { openUserId = ''; writeURL(); }
+})();
+</script>
+</body>
+</html>
